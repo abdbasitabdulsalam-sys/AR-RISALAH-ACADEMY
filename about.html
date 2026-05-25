@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — AR-Risalah Academy</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-hero{background:var(--g-hero);padding:6rem 0 4rem;margin-top:112px}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;font-weight:700}
+.mission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.mission-card{background:var(--white);border-radius:20px;padding:2rem;border:1px solid var(--border);box-shadow:var(--shadow);text-align:center;transition:all 0.3s}
+.mission-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.mission-icon{font-size:2.5rem;margin-bottom:1rem}
+.mission-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--green-dark);margin-bottom:0.8rem}
+.mission-card p{color:var(--text-mid);font-size:13px;line-height:1.8}
+.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.value-item{display:flex;align-items:flex-start;gap:12px;padding:1rem;background:var(--green-light);border-radius:12px;border-left:3px solid var(--green)}
+.value-icon{font-size:1.4rem;flex-shrink:0}
+.value-text h4{font-weight:700;font-size:14px;color:var(--green-dark);margin-bottom:3px}
+.value-text p{font-size:12px;color:var(--text-mid);line-height:1.6}
+.proprietor-card{background:linear-gradient(135deg,var(--green-dark),#005500);border-radius:24px;padding:3rem;color:#fff;display:grid;grid-template-columns:auto 1fr;gap:2.5rem;align-items:center}
+.prop-avatar{width:120px;height:120px;border-radius:50%;border:3px solid var(--gold);background:rgba(212,160,23,0.15);display:flex;align-items:center;justify-content:center;font-size:3rem;flex-shrink:0}
+.prop-name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);font-weight:700;margin-bottom:0.3rem}
+.prop-title{font-size:13px;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem}
+.prop-quote{font-family:'Amiri',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.85);line-height:1.7;border-left:3px solid var(--gold);padding-left:1rem;margin-bottom:1rem}
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--green-light)}
+.tl-item{position:relative;margin-bottom:2rem}
+.tl-dot{position:absolute;left:-28px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--green-dark);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center}
+.tl-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.tl-year{font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.tl-content{background:var(--white);border-radius:12px;padding:1rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+.tl-content h4{font-weight:700;color:var(--green-dark);font-size:14px;margin-bottom:4px}
+.tl-content p{font-size:13px;color:var(--text-mid);line-height:1.7}
+@media(max-width:768px){
+  .mission-grid,.values-grid{grid-template-columns:1fr}
+  .proprietor-card{grid-template-columns:1fr;text-align:center}
+  .prop-quote{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="welcome-bar">
+  <div class="welcome-bar-inner">🌿 <span style="color:var(--gold);font-weight:900">You are welcome to AR-Risalah Academy Nursery &amp; Basic School</span> &nbsp;✦&nbsp; <span>Knowledge Is Insight</span> &nbsp;✦&nbsp; <span>📞 08022943827 | 08079265878 | ✉ adekunleismail51@gmail.com</span> &nbsp;&nbsp;&nbsp;</div>
+</div>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-logo"><div class="logo-placeholder" style="width:44px;height:44px;color:var(--gold)"></div></div>
+      <div><span class="brand-name">AR-RISALAH ACADEMY</span><span class="brand-sub">Nursery &amp; Basic School</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link active">About</a></li>
+      <li><a href="admission.html" class="nav-link">Admission</a></li>
+      <li><a href="results.html" class="nav-link">Results</a></li>
+      <li><a href="admin.html" class="nav-link">Admin</a></li>
+      <li><a href="portals.html" class="nav-link">Portals</a></li>
+      <li><a href="media.html" class="nav-link">Media</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <a href="admission.html" class="btn btn-gold btn-sm">✦ Enrol Now</a>
+    </div>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Home</a><a href="about.html">ℹ️ About</a><a href="admission.html">📝 Admission</a><a href="results.html">📊 Results</a>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow eyebrow-gold">About Our School</div>
+    <h1>Nurturing Tomorrow's <em style="color:var(--gold)">Leaders</em></h1>
+    <p style="color:rgba(255,255,255,0.65);margin-top:0.5rem">A citadel of knowledge blending Moral, Islamic & Western Education — Saki, Oyo State</p>
+  </div>
+</div>
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="grid-2" style="align-items:center">
+      <div class="fade-in">
+        <div class="eyebrow">Our Story</div>
+        <h2 class="section-title">School <em>History</em></h2>
+        <div class="gold-bar"></div>
+        <p style="color:var(--text-mid);line-height:1.9;margin-bottom:1rem">AR-RISALAH ACADEMY Nursery & Basic School was founded with a singular vision: to provide the children of Saki and its environs with an education that honours both their Islamic identity and their need for world-class academic knowledge.</p>
+        <p style="color:var(--text-mid);line-height:1.9;margin-bottom:1rem">The name "Ar-Risalah" (الرسالة) means "The Message" — reflecting our commitment to delivering the message of knowledge, moral excellence, and Islamic values to every child in our care.</p>
+        <p style="color:var(--text-mid);line-height:1.9">Located at Alh. Zakariyah Salaam Street, behind Suurulere Kaomi Central Mosque, Saki, we serve families from Crèche through Basic 6 with qualified teachers, modern facilities, and affordable fees.</p>
+      </div>
+      <div class="timeline fade-in" style="transition-delay:0.2s">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">Founded</div>
+          <div class="tl-content"><h4>School Established</h4><p>AR-Risalah Academy Nursery & Basic School opened its doors in Saki, Oyo State, under the proprietorship of Mr. Ashiru Ismail Adekunle.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">Early Years</div>
+          <div class="tl-content"><h4>Nursery Programme Launched</h4><p>Launched full Nursery 1–3 programme with Islamic curriculum integration, Qur'an memorisation and western education.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">Growth</div>
+          <div class="tl-content"><h4>Basic School Expanded</h4><p>Expanded to full Basic 1–6, adding Computer Studies, Arabic Language, and comprehensive Islamic Studies to the curriculum.</p></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2025/2026</div>
+          <div class="tl-content"><h4>Digital ERP System</h4><p>Launched fully computerised result management, online portals for parents, teachers, and students — a new era of excellence.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="background:var(--off-white)">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Our Purpose</div>
+      <h2 class="section-title">Mission, Vision & <em>Values</em></h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="mission-grid mt-4">
+      <div class="mission-card fade-in">
+        <div class="mission-icon">🎯</div>
+        <h3>Our Mission</h3>
+        <p>To provide quality education that integrates Islamic values, moral character development, and western academic excellence — producing well-rounded, God-fearing, and academically sound young Muslims who will contribute positively to society.</p>
+      </div>
+      <div class="mission-card fade-in" style="transition-delay:0.15s">
+        <div class="mission-icon">🌟</div>
+        <h3>Our Vision</h3>
+        <p>To be the leading Islamic nursery and basic school in Oyo State — recognised for academic excellence, moral uprightness, spiritual development, and producing graduates who excel in both this world and the hereafter.</p>
+      </div>
+      <div class="mission-card fade-in" style="transition-delay:0.3s">
+        <div class="mission-icon">📖</div>
+        <h3>Our Motto</h3>
+        <p style="font-family:'Amiri',serif;font-size:1.3rem;color:var(--green-dark);font-style:italic;margin-bottom:0.5rem">"Knowledge Is Insight"</p>
+        <p>We believe that true knowledge leads to divine insight — illuminating the path of every child towards academic, moral, and spiritual success in life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="background:var(--green-light)">
+  <div class="container">
+    <div class="grid-2" style="align-items:start">
+      <div class="fade-in">
+        <div class="eyebrow">Core Values</div>
+        <h2 class="section-title">What We <em>Stand For</em></h2>
+        <div class="gold-bar"></div>
+        <div class="values-grid">
+          <div class="value-item"><span class="value-icon">🕌</span><div class="value-text"><h4>Islamic Identity</h4><p>Preserving and celebrating Islamic values in every aspect of school life.</p></div></div>
+          <div class="value-item"><span class="value-icon">📚</span><div class="value-text"><h4>Academic Excellence</h4><p>Maintaining high standards in all subjects of the national curriculum.</p></div></div>
+          <div class="value-item"><span class="value-icon">🌱</span><div class="value-text"><h4>Moral Upbringing</h4><p>Building honest, respectful, and responsible citizens of society.</p></div></div>
+          <div class="value-item"><span class="value-icon">🤝</span><div class="value-text"><h4>Community</h4><p>Fostering a supportive community of parents, teachers, and students.</p></div></div>
+          <div class="value-item"><span class="value-icon">💡</span><div class="value-text"><h4>Innovation</h4><p>Embracing modern technology and teaching methods while staying true to values.</p></div></div>
+          <div class="value-item"><span class="value-icon">💚</span><div class="value-text"><h4>Affordability</h4><p>Making quality Islamic education accessible to every family in Saki.</p></div></div>
+        </div>
+      </div>
+      <!-- ANTHEM REPEAT -->
+      <div class="fade-in" style="transition-delay:0.2s">
+        <div class="eyebrow">School Anthem</div>
+        <h2 class="section-title">Our <em>Anthem</em></h2>
+        <div class="gold-bar"></div>
+        <div style="background:var(--green-dark);border-radius:20px;padding:2rem;color:#fff">
+          <div style="font-family:'Amiri',serif;color:var(--gold);font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.2rem;font-style:italic">🎵 The School Anthem</div>
+          <ul style="list-style:none">
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Up Ar-Risalah, Up Ar-Risalah</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Champion is us</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">We are the best</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Knowledge is insight</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Ar-Risalah! Academy</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Is a citadel of knowledge</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Success is us in everything</li>
+            <li style="font-family:'Amiri',serif;font-size:1.3rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Of our life.</li>
+            <li style="font-family:'Amiri',serif;font-size:1.4rem;padding:8px 0;font-weight:700;color:var(--gold)">Up Up Up, Ar-Risalah.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:3rem">
+      <div class="eyebrow">Leadership</div>
+      <h2 class="section-title">Meet Our <em>Proprietor</em></h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="proprietor-card fade-in">
+      <div class="prop-avatar">👨‍💼</div>
+      <div>
+        <div class="prop-name">Mr. Ashiru Ismail Adekunle</div>
+        <div class="prop-title">Founder & Proprietor — AR-Risalah Academy Nursery & Basic School</div>
+        <div class="prop-quote">"Education is the best legacy you can afford to your children. At AR-Risalah Academy, we are committed to ensuring that every child receives a quality education that prepares them not just for examinations, but for life itself — grounded in Islamic values and equipped with modern knowledge."</div>
+        <div class="flex gap-2 flex-wrap">
+          <a href="tel:08022943827" class="btn btn-gold btn-sm">📱 08022943827</a>
+          <a href="tel:08079265878" class="btn btn-outline-gold btn-sm">📞 08079265878</a>
+          <a href="mailto:adekunleismail51@gmail.com" class="btn btn-outline-gold btn-sm">✉ Email</a>
+          <a href="https://wa.me/2348022943827" class="btn btn-sm" style="background:#25D366;color:#fff" target="_blank">💬 WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:2rem">
+      <p>© 2025/2026 AR-Risalah Academy Nursery &amp; Basic School, Saki. All Rights Reserved.</p>
+      <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold)">"Knowledge Is Insight"</p>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/2348022943827" class="wa-float" target="_blank">💬</a>
+<script src="app.js"></script>
+</body>
+</html>

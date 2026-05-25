@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Gallery — AR-Risalah Academy</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-hero{background:var(--g-hero);padding:6rem 0 4rem;margin-top:112px}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;font-weight:700}
+.media-filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.media-filter-btn{padding:8px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--text-dark);transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.media-filter-btn.active{background:var(--green-dark);color:#fff;border-color:var(--green-dark)}
+.media-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.media-item{border-radius:16px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:1;transition:all 0.3s}
+.media-item:hover{transform:scale(1.02)}
+.media-item-inner{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.media-item-overlay{position:absolute;inset:0;background:rgba(0,50,0,0.5);opacity:0;transition:opacity 0.3s;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.media-item:hover .media-item-overlay{opacity:1}
+.media-item-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.7));padding:1rem 0.8rem 0.8rem;color:#fff;font-size:12px;font-weight:700}
+.video-card{border-radius:16px;overflow:hidden;background:var(--green-dark);cursor:pointer;transition:all 0.3s;border:1px solid rgba(212,160,23,0.2)}
+.video-card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.video-thumb{height:140px;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;position:relative}
+.play-btn{width:50px;height:50px;border-radius:50%;background:rgba(212,160,23,0.9);display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all 0.2s}
+.video-card:hover .play-btn{background:var(--gold);transform:scale(1.1)}
+.testi-card{background:var(--white);border-radius:20px;padding:1.8rem;border:1px solid var(--border);box-shadow:var(--shadow);transition:all 0.3s}
+.testi-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+@media(max-width:900px){.media-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.media-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="welcome-bar">
+  <div class="welcome-bar-inner">🌿 <span style="color:var(--gold);font-weight:900">You are welcome to AR-Risalah Academy Nursery &amp; Basic School</span> &nbsp;✦&nbsp; <span>Knowledge Is Insight</span> &nbsp;✦&nbsp; <span>📞 08022943827 | ✉ adekunleismail51@gmail.com</span> &nbsp;&nbsp;&nbsp;</div>
+</div>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-logo"><div class="logo-placeholder" style="width:44px;height:44px;color:var(--gold)"></div></div>
+      <div><span class="brand-name">AR-RISALAH ACADEMY</span><span class="brand-sub">Nursery &amp; Basic School</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="admission.html" class="nav-link">Admission</a></li>
+      <li><a href="results.html" class="nav-link">Results</a></li>
+      <li><a href="admin.html" class="nav-link">Admin</a></li>
+      <li><a href="portals.html" class="nav-link">Portals</a></li>
+      <li><a href="media.html" class="nav-link active">Media</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <a href="admission.html" class="btn btn-gold btn-sm">✦ Enrol Now</a>
+    </div>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Home</a><a href="media.html">📸 Media</a>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow eyebrow-gold">Media & Gallery</div>
+    <h1>School <em style="color:var(--gold)">TV</em> & Gallery</h1>
+    <p style="color:rgba(255,255,255,0.65);margin-top:0.5rem">Photos, videos, events, and parent testimonies from AR-Risalah Academy</p>
+  </div>
+</div>
+<section class="section" style="background:var(--off-white);padding-top:3rem">
+  <div class="container">
+    <!-- PHOTO GALLERY -->
+    <div class="eyebrow">Photo Gallery</div>
+    <h2 class="section-title">School <em>Photos</em></h2>
+    <div class="gold-bar"></div>
+    <div class="media-filters">
+      <button class="media-filter-btn active" onclick="filterMedia(this,'all')">All Photos</button>
+      <button class="media-filter-btn" onclick="filterMedia(this,'events')">Events</button>
+      <button class="media-filter-btn" onclick="filterMedia(this,'islamic')">Islamic Activities</button>
+      <button class="media-filter-btn" onclick="filterMedia(this,'graduation')">Graduation</button>
+      <button class="media-filter-btn" onclick="filterMedia(this,'classes')">Classes</button>
+      <button class="media-filter-btn" onclick="filterMedia(this,'sports')">Sports</button>
+    </div>
+    <div class="media-grid" id="photoGrid">
+      <div class="media-item" style="background:linear-gradient(145deg,#002a00,#005a00)"><div class="media-item-inner"><div style="font-size:3rem">🕌</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Morning Assembly</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div><div style="color:#fff;font-size:12px">View</div></div><div class="media-item-label">Morning Islamic Assembly</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#b8860b,#d4a017)"><div class="media-item-inner"><div style="font-size:3rem">🎓</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Graduation Day</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Graduation Ceremony 2024</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#1a5276,#2980b9)"><div class="media-item-inner"><div style="font-size:3rem">💻</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Computer Lab</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Computer Education Class</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#1e8449,#27ae60)"><div class="media-item-inner"><div style="font-size:3rem">📖</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Qur'an Class</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Qur'an Memorisation Session</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#6c3483,#8e44ad)"><div class="media-item-inner"><div style="font-size:3rem">🏆</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Competitions</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Inter-School Competition</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#922b21,#c0392b)"><div class="media-item-inner"><div style="font-size:3rem">⚽</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Sports Day</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Annual Sports Day</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#1a7a4a,#2ecc71)"><div class="media-item-inner"><div style="font-size:3rem">🌙</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Ramadan</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Ramadan Activities</div></div>
+      <div class="media-item" style="background:linear-gradient(145deg,#c07000,#e08000)"><div class="media-item-inner"><div style="font-size:3rem">🎨</div><div style="color:rgba(255,255,255,0.7);font-size:12px">Art Class</div></div><div class="media-item-overlay"><div style="font-size:2rem">🔍</div></div><div class="media-item-label">Creative Arts Exhibition</div></div>
+    </div>
+    <div style="text-align:center;margin-top:2rem">
+      <p style="color:var(--text-light);font-size:13px">More photos can be uploaded by the school administrator via <a href="admin.html" style="color:var(--green);font-weight:700">Admin → Media Portal</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- SCHOOL TV / VIDEO -->
+<section class="section" style="background:var(--green-dark)">
+  <div class="container">
+    <div class="eyebrow eyebrow-gold">School TV</div>
+    <h2 class="section-title section-title-white">School <em style="color:var(--gold)">Video</em> Portal</h2>
+    <div class="gold-bar"></div>
+    <div class="grid-3" style="gap:1.5rem">
+      <div class="video-card">
+        <div class="video-thumb"><div style="font-size:2.5rem">🏫</div><div class="play-btn">▶</div></div>
+        <div style="padding:1rem"><div style="font-weight:700;color:#fff;font-size:14px">School Introduction</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px">Welcome to AR-Risalah Academy</div></div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb"><div style="font-size:2.5rem">🎓</div><div class="play-btn">▶</div></div>
+        <div style="padding:1rem"><div style="font-weight:700;color:#fff;font-size:14px">Graduation Ceremony</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px">Annual graduation highlights</div></div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb"><div style="font-size:2.5rem">🕌</div><div class="play-btn">▶</div></div>
+        <div style="padding:1rem"><div style="font-weight:700;color:#fff;font-size:14px">Islamic Activities</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px">Qur'an recitation & Islamic events</div></div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.4);font-size:13px;text-align:center;margin-top:1.5rem">Videos uploaded by admin · MP4 and YouTube links supported · Upload via <a href="admin.html" style="color:var(--gold)">Admin Portal</a></p>
+  </div>
+</section>
+
+<!-- TESTIMONIES -->
+<section class="section" style="background:var(--white)" id="testimonies">
+  <div class="container">
+    <div class="eyebrow">Parent Testimonies</div>
+    <h2 class="section-title">What Our <em>Parents</em> Say</h2>
+    <div class="gold-bar"></div>
+    <div class="grid-3" style="gap:1.5rem">
+      <div class="testi-card fade-in"><div style="color:var(--gold);font-size:1.1rem;margin-bottom:.8rem">★★★★★</div><p style="font-size:13px;color:var(--text-mid);line-height:1.8;font-style:italic;margin-bottom:1.2rem">"My son's Islamic knowledge has improved tremendously since joining Ar-Risalah Academy. He now recites Qur'an fluently and his grades are outstanding. Best school in Saki!"</p><div class="flex gap-2 align-items:center"><div style="width:40px;height:40px;border-radius:50%;background:var(--green-dark);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">AA</div><div><div style="font-weight:700;font-size:13px;color:var(--green-dark)">Alhaji Abdullahi A.</div><div style="font-size:11px;color:var(--text-light)">Parent · Basic 5 Student</div></div></div></div>
+      <div class="testi-card fade-in" style="transition-delay:0.1s"><div style="color:var(--gold);font-size:1.1rem;margin-bottom:.8rem">★★★★★</div><p style="font-size:13px;color:var(--text-mid);line-height:1.8;font-style:italic;margin-bottom:1.2rem">"The school provides the perfect balance of Islamic and western education. My daughter is happy, well-mannered, and academically excellent. I recommend this school to every Muslim parent."</p><div class="flex gap-2"><div style="width:40px;height:40px;border-radius:50%;background:var(--green-dark);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">HF</div><div><div style="font-weight:700;font-size:13px;color:var(--green-dark)">Hajia Fatimah O.</div><div style="font-size:11px;color:var(--text-light)">Parent · Nursery 3 Student</div></div></div></div>
+      <div class="testi-card fade-in" style="transition-delay:0.2s"><div style="color:var(--gold);font-size:1.1rem;margin-bottom:.8rem">★★★★★</div><p style="font-size:13px;color:var(--text-mid);line-height:1.8;font-style:italic;margin-bottom:1.2rem">"The result system is transparent and professional. The fees are very affordable and the teachers are caring and dedicated. I have all three of my children enrolled here."</p><div class="flex gap-2"><div style="width:40px;height:40px;border-radius:50%;background:var(--green-dark);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">MB</div><div><div style="font-weight:700;font-size:13px;color:var(--green-dark)">Malam Bello M.</div><div style="font-size:11px;color:var(--text-light)">Parent · 3 Students Enrolled</div></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:2rem">
+      <button class="btn btn-green" onclick="openModal('addTestimonyModal')">✍️ Share Your Testimony</button>
+    </div>
+  </div>
+</section>
+<div class="modal-overlay" id="addTestimonyModal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Share Your Testimony</h3><button class="modal-close" onclick="closeModal('addTestimonyModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Your Name</label><input class="form-control" id="testiName" placeholder="Parent/Guardian name"></div>
+      <div class="form-group"><label class="form-label">Your Child's Class</label><select class="form-control" id="testiClass"><option>Nursery 1</option><option>Nursery 2</option><option>Nursery 3</option><option>Basic 1</option><option>Basic 2</option><option>Basic 3</option><option>Basic 4</option><option>Basic 5</option><option>Basic 6</option></select></div>
+      <div class="form-group"><label class="form-label">Your Testimony</label><textarea class="form-control" id="testiMsg" rows="4" placeholder="Share your experience at AR-Risalah Academy..."></textarea></div>
+      <div class="form-group"><label class="form-label">Rating</label>
+        <div style="display:flex;gap:0.5rem">
+          <span id="ratingDisplay" style="font-size:1.3rem;letter-spacing:2px;color:var(--gold)">★★★★★</span>
+          <span style="font-size:12px;color:var(--text-light);align-self:center">(5 stars)</span>
+        </div>
+      </div>
+      <button class="btn btn-green w-full" style="justify-content:center" onclick="submitTestimony()">Submit Testimony</button>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:2rem">
+      <p>© 2025/2026 AR-Risalah Academy Nursery &amp; Basic School, Saki. All Rights Reserved.</p>
+      <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold)">"Knowledge Is Insight"</p>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/2348022943827" class="wa-float" target="_blank">💬</a>
+<script src="app.js"></script>
+<script>
+function filterMedia(btn, type) {
+  document.querySelectorAll('.media-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function submitTestimony() {
+  const name = document.getElementById('testiName').value.trim();
+  const msg = document.getElementById('testiMsg').value.trim();
+  if (!name || !msg) { showToast('Please fill in all fields', 'warning'); return; }
+  closeModal('addTestimonyModal');
+  showToast('Thank you for your testimony! It will appear after review.', 'success', 5000);
+}
+</script>
+</body>
+</html>

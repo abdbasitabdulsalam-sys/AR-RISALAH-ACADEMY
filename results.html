@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Results Portal — AR-Risalah Academy</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-hero{background:var(--g-hero);padding:6rem 0 4rem;margin-top:112px}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;font-weight:700}
+.page-hero p{color:rgba(255,255,255,0.65);font-size:1rem;margin-top:0.5rem}
+
+/* RESULT GENERATOR */
+.result-generator{background:var(--white);border-radius:24px;padding:2rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+.step-indicator{display:flex;align-items:center;gap:0;margin-bottom:2rem;flex-wrap:wrap;gap:0}
+.step{display:flex;align-items:center;gap:8px;flex:1}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--green-light);color:var(--green-dark);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s}
+.step.active .step-num{background:var(--green-dark);color:#fff}
+.step.done .step-num{background:var(--gold);color:#001a00}
+.step-label{font-size:12px;font-weight:700;color:var(--text-mid)}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 0.5rem;min-width:20px}
+.step.done .step-line{background:var(--gold)}
+
+/* SUBJECT SELECTOR */
+.subject-bank{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem}
+.subj-tag{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--off-white);color:var(--text-dark);transition:all 0.2s;user-select:none}
+.subj-tag.selected{background:var(--green-dark);color:#fff;border-color:var(--green-dark)}
+.subj-tag:hover:not(.selected){border-color:var(--green);color:var(--green)}
+.subj-tag .remove{font-size:10px;opacity:0.7}
+.custom-subj-row{display:flex;gap:0.8rem;align-items:center;margin-top:0.8rem}
+
+/* SCORE ENTRY TABLE */
+.score-table-wrap{overflow-x:auto}
+.score-table{width:100%;border-collapse:collapse;font-size:13px}
+.score-table th{background:var(--green-dark);color:#fff;padding:10px 12px;text-align:left;font-size:11px;letter-spacing:0.5px;white-space:nowrap}
+.score-table td{padding:8px 10px;border-bottom:1px solid var(--green-light);vertical-align:middle}
+.score-table tr:hover td{background:var(--green-pale)}
+.score-input{width:65px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;text-align:center;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.score-input:focus{border-color:var(--green)}
+.score-input.error{border-color:#dc2626;background:#fef2f2}
+.computed-total{font-weight:800;color:var(--green-dark);font-size:14px}
+.fail-row td{background:#fef2f2 !important}
+.fail-row .computed-total{color:#dc2626}
+
+/* GRADING SYSTEM SELECTOR */
+.grading-options{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.grading-opt{display:flex;align-items:center;gap:10px;padding:12px 20px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;flex:1;min-width:200px}
+.grading-opt.selected{border-color:var(--green);background:var(--green-pale)}
+.grading-opt input[type=radio]{accent-color:var(--green);width:16px;height:16px}
+.grading-opt-label{font-weight:700;font-size:13px;color:var(--text-dark)}
+.grading-opt-sub{font-size:11px;color:var(--text-light)}
+
+/* BEHAVIOUR RATING */
+.behav-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.behav-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--green-light)}
+.behav-name{font-size:13px;color:var(--text-dark);font-weight:600}
+.star-rate{display:flex;gap:4px}
+.star-btn{width:22px;height:22px;border:none;background:none;cursor:pointer;font-size:1rem;transition:transform 0.1s;padding:0}
+.star-btn:hover{transform:scale(1.2)}
+.star-btn.active{color:var(--gold)}
+.star-btn.inactive{color:#e0e0e0}
+
+/* ─── PRINTABLE RESULT SHEET ─── */
+@media screen {
+  .result-sheet-preview{border:2px solid var(--green-light);border-radius:20px;overflow:hidden;margin-top:2rem;position:relative}
+}
+.result-sheet{background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;color:#111;position:relative;overflow:hidden}
+
+/* Watermark */
+.rs-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);opacity:0.04;pointer-events:none;z-index:0;width:60%;max-width:500px;color:var(--green)}
+
+/* Header */
+.rs-header{background:var(--green-dark);padding:14px 20px;display:flex;align-items:center;gap:16px;position:relative;z-index:1}
+.rs-logo-wrap{width:75px;height:75px;border-radius:50%;background:rgba(255,255,255,0.1);border:2px solid rgba(212,160,23,0.6);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.rs-school-info{flex:1}
+.rs-school-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold)}
+.rs-school-sub{font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;letter-spacing:0.5px}
+.rs-school-addr{font-size:10px;color:rgba(255,255,255,0.55);margin-top:3px;line-height:1.5}
+.rs-header-right{text-align:right;flex-shrink:0}
+.rs-session{background:rgba(212,160,23,0.2);border:1px solid rgba(212,160,23,0.4);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--gold);font-weight:700;text-align:center}
+.rs-serial{font-size:9px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px}
+
+/* Body */
+.rs-body{padding:12px 16px;position:relative;z-index:1}
+
+/* Bio Row */
+.rs-bio-row{display:flex;gap:12px;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--green-light)}
+.rs-passport{width:75px;height:90px;border-radius:8px;border:2px solid var(--green-light);overflow:hidden;flex-shrink:0;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative}
+.rs-passport-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.15;font-size:1.5rem}
+.rs-bio-fields{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+.rs-bio-field{display:flex;align-items:center;gap:4px;font-size:11px}
+.rs-bio-label{color:#777;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;font-size:10px}
+.rs-bio-value{color:#111;font-weight:600}
+.rs-bio-attend{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px;background:var(--green-light);padding:8px;border-radius:8px}
+.rs-att-item{text-align:center}
+.rs-att-num{font-size:1.1rem;font-weight:800;color:var(--green-dark)}
+.rs-att-lbl{font-size:9px;color:#777;text-transform:uppercase;letter-spacing:0.5px}
+
+/* Subject Table */
+.rs-subj-table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:11px}
+.rs-subj-table th{background:var(--green-dark);color:#fff;padding:7px 8px;text-align:center;font-size:10px;letter-spacing:0.3px}
+.rs-subj-table th:first-child{text-align:left;border-radius:4px 0 0 0}
+.rs-subj-table th:last-child{border-radius:0 4px 0 0}
+.rs-subj-table td{padding:5px 8px;border-bottom:1px solid #e8f5e0;text-align:center}
+.rs-subj-table td:first-child{text-align:left;font-weight:600}
+.rs-subj-table tfoot td{background:var(--green-light);font-weight:800;color:var(--green-dark);padding:7px 8px}
+.rs-fail td{background:#fff0f0 !important;color:#cc0000 !important}
+.rs-fail td:first-child{color:#cc0000 !important}
+
+/* Behaviour & Psychomotor */
+.rs-domains{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.rs-domain{border:1px solid var(--green-light);border-radius:8px;padding:8px}
+.rs-domain-title{font-weight:800;font-size:10px;color:var(--green-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.rs-domain-item{display:flex;align-items:center;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f0f9f0}
+.rs-domain-item:last-child{border-bottom:none}
+.rs-domain-name{font-size:10px;color:#444}
+.rs-domain-stars{display:flex;gap:2px}
+.rs-star{width:10px;height:10px;border-radius:2px}
+.rs-star.filled{background:var(--gold)}
+.rs-star.empty{background:#e0e0e0}
+
+/* Comments */
+.rs-comments{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.rs-comment{border:1px solid var(--green-light);border-radius:8px;padding:8px}
+.rs-comment-label{font-size:10px;font-weight:800;color:var(--green-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.rs-comment-text{font-size:11px;color:#444;line-height:1.5;min-height:28px}
+
+/* Cumulative */
+.rs-cumulative{background:var(--green-light);border-radius:8px;padding:8px;margin-bottom:10px}
+.rs-cum-title{font-size:10px;font-weight:800;color:var(--green-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.rs-cum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.rs-cum-item{background:#fff;border-radius:6px;padding:6px;text-align:center}
+.rs-cum-val{font-size:1rem;font-weight:800;color:var(--green-dark)}
+.rs-cum-label{font-size:9px;color:#777;text-transform:uppercase;letter-spacing:0.3px}
+
+/* Signatories */
+.rs-sigs{display:grid;grid-template-columns:1fr 1fr 1fr 80px;gap:10px;margin-bottom:10px}
+.rs-sig{text-align:center;border-top:1px solid #ccc;padding-top:4px}
+.rs-sig-name{font-size:10px;font-weight:700;color:var(--green-dark)}
+.rs-sig-role{font-size:9px;color:#999}
+.rs-stamp{width:70px;height:70px;border-radius:50%;border:2px dashed var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--green-mid);text-align:center;line-height:1.3;flex-direction:column;margin:0 auto}
+
+/* Footer */
+.rs-footer{background:var(--green-dark);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.rs-footer-motto{font-family:'Amiri',serif;font-style:italic;color:var(--gold);font-size:0.95rem}
+.rs-footer-qr{width:50px;height:50px;background:rgba(255,255,255,0.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:center;line-height:1.3}
+
+/* Promotion Banner */
+.rs-promo{text-align:center;padding:8px;border-radius:8px;font-size:13px;font-weight:800;letter-spacing:1px;margin-bottom:10px}
+.rs-promo.promoted{background:#d1fae5;color:#065f46;border:2px solid #6ee7b7}
+.rs-promo.conditional{background:#fef3c7;color:#92400e;border:2px solid #fcd34d}
+.rs-promo.repeat{background:#fee2e2;color:#991b1b;border:2px solid #fca5a5}
+
+@media print {
+  body > *:not(.result-print-wrap) { display: none !important; }
+  .result-print-wrap { display: block !important; }
+  @page { size: A4 landscape; margin: 10mm; }
+  .rs-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .rs-subj-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME MARQUEE -->
+<div class="welcome-bar">
+  <div class="welcome-bar-inner">🌿 <span style="color:var(--gold);font-weight:900">You are welcome to AR-Risalah Academy Nursery &amp; Basic School</span> &nbsp;✦&nbsp; <span>Knowledge Is Insight</span> &nbsp;✦&nbsp; Results Portal — 2025/2026 Academic Session &nbsp;✦&nbsp; <span>📞 08022943827 | 08079265878</span> &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-logo"><div class="logo-placeholder" style="width:44px;height:44px;color:var(--gold)"></div></div>
+      <div><span class="brand-name">AR-RISALAH ACADEMY</span><span class="brand-sub">Nursery &amp; Basic School</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="admission.html" class="nav-link">Admission</a></li>
+      <li><a href="results.html" class="nav-link active">Results</a></li>
+      <li><a href="admin.html" class="nav-link">Admin</a></li>
+      <li><a href="portals.html" class="nav-link">Portals</a></li>
+      <li><a href="media.html" class="nav-link">Media</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <a href="admission.html" class="btn btn-gold btn-sm">✦ Enrol Now</a>
+    </div>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Home</a><a href="results.html">📊 Results</a><a href="admin.html">⚙️ Admin</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow eyebrow-gold">Results Portal</div>
+    <h1>Academic Result <em style="color:var(--gold)">Generator</em></h1>
+    <p>Generate, compute, and print professional A4 result sheets with automatic grading, ranking, and promotion status.</p>
+  </div>
+</div>
+
+<section class="section" style="background:var(--off-white);padding-top:3rem">
+  <div class="container">
+    <div class="grid-2" style="gap:2.5rem;align-items:start">
+
+      <!-- LEFT: RESULT FORM -->
+      <div>
+        <div class="result-generator">
+          <!-- STEP INDICATOR -->
+          <div class="step-indicator">
+            <div class="step active" id="step1"><div class="step-num">1</div><div class="step-label">Setup</div></div>
+            <div class="step-line"></div>
+            <div class="step" id="step2"><div class="step-num">2</div><div class="step-label">Subjects</div></div>
+            <div class="step-line"></div>
+            <div class="step" id="step3"><div class="step-num">3</div><div class="step-label">Scores</div></div>
+            <div class="step-line"></div>
+            <div class="step" id="step4"><div class="step-num">4</div><div class="step-label">Behaviour</div></div>
+            <div class="step-line"></div>
+            <div class="step" id="step5"><div class="step-num">5</div><div class="step-label">Preview</div></div>
+          </div>
+
+          <!-- STEP 1: SETUP -->
+          <div id="formStep1">
+            <h3 style="font-family:'Cormorant Garamond',serif;color:var(--green-dark);margin-bottom:1.5rem;font-size:1.3rem">Step 1: Result Setup</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Academic Session</label>
+                <select class="form-control" id="rSession">
+                  <option>2025/2026</option><option>2024/2025</option><option>2023/2024</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Term</label>
+                <select class="form-control" id="rTerm">
+                  <option>First Term</option><option>Second Term</option><option>Third Term</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Class <span class="required">*</span></label>
+                <select class="form-control" id="rClass" onchange="updateSubjectBank()">
+                  <optgroup label="Nursery">
+                    <option>Nursery 1</option><option>Nursery 2</option><option>Nursery 3</option>
+                  </optgroup>
+                  <optgroup label="Basic">
+                    <option>Basic 1</option><option>Basic 2</option><option>Basic 3</option>
+                    <option>Basic 4</option><option selected>Basic 5</option><option>Basic 6</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Total Pupils in Class</label>
+                <input type="number" class="form-control" id="rTotalPupils" value="30" min="1">
+              </div>
+            </div>
+
+            <!-- GRADING SYSTEM SELECTION -->
+            <div class="form-group">
+              <label class="form-label">CA/Exam Grading System <span class="required">*</span></label>
+              <div class="grading-options">
+                <label class="grading-opt selected" id="gs30_70">
+                  <input type="radio" name="gradingSystem" value="30_70" checked onchange="selectGrading('30_70')">
+                  <div><div class="grading-opt-label">CA 30 / Exam 70</div><div class="grading-opt-sub">CA out of 30, Exam out of 70 = Total 100</div></div>
+                </label>
+                <label class="grading-opt" id="gs40_60">
+                  <input type="radio" name="gradingSystem" value="40_60" onchange="selectGrading('40_60')">
+                  <div><div class="grading-opt-label">CA 40 / Exam 60</div><div class="grading-opt-sub">CA out of 40, Exam out of 60 = Total 100</div></div>
+                </label>
+              </div>
+            </div>
+
+            <!-- STUDENT BIO -->
+            <h4 style="color:var(--green-dark);margin:1.5rem 0 1rem;font-size:1rem">Student Information</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Student Full Name <span class="required">*</span></label>
+                <input type="text" class="form-control" id="rStudentName" placeholder="e.g. Ahmad Yusuf Bello">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Admission Number</label>
+                <input type="text" class="form-control" id="rAdmNo" placeholder="e.g. ARA/2025/001">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Gender</label>
+                <select class="form-control" id="rGender"><option>Male</option><option>Female</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" id="rDOB">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Parent/Guardian Name</label>
+              <input type="text" class="form-control" id="rParent" placeholder="e.g. Alhaji Yusuf Bello">
+            </div>
+
+            <!-- ATTENDANCE -->
+            <h4 style="color:var(--green-dark);margin:1.5rem 0 1rem;font-size:1rem">Attendance Record</h4>
+            <div class="form-row-3 form-row">
+              <div class="form-group">
+                <label class="form-label">Times School Opened</label>
+                <input type="number" class="form-control" id="rOpened" value="60" min="0" oninput="calcAttend()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Times Present</label>
+                <input type="number" class="form-control" id="rPresent" value="55" min="0" oninput="calcAttend()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Attendance %</label>
+                <input type="text" class="form-control" id="rAttendPct" readonly style="background:var(--green-pale);font-weight:700;color:var(--green-dark)" value="92%">
+              </div>
+            </div>
+
+            <!-- TERM DATES -->
+            <div class="form-row-3 form-row">
+              <div class="form-group">
+                <label class="form-label">Term Begins</label>
+                <input type="date" class="form-control" id="rTermBegins">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Term Ends</label>
+                <input type="date" class="form-control" id="rTermEnds">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Next Term Begins</label>
+                <input type="date" class="form-control" id="rNextTerm">
+              </div>
+            </div>
+
+            <!-- PASSPORT UPLOAD -->
+            <div class="form-group">
+              <label class="form-label">Student Passport Photograph</label>
+              <div style="border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="document.getElementById('passportUpload').click()" id="passportDropzone">
+                <div id="passportPreview" style="display:none;position:relative;width:80px;height:96px;margin:0 auto 0.5rem">
+                  <img id="passportImg" style="width:80px;height:96px;object-fit:cover;border-radius:8px;border:2px solid var(--green-light)">
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.12;pointer-events:none">
+                    <div class="logo-placeholder" style="width:70px;height:70px;color:var(--green)"></div>
+                  </div>
+                </div>
+                <div id="passportPlaceholder">
+                  <div style="font-size:2.5rem">📷</div>
+                  <p style="font-size:13px;color:var(--text-light);margin-top:0.5rem">Click to upload passport photo</p>
+                  <p style="font-size:11px;color:var(--text-light);margin-top:2px">JPG, PNG — Logo watermark will appear on result</p>
+                </div>
+              </div>
+              <input type="file" id="passportUpload" accept="image/*" style="display:none" onchange="previewPassport(this)">
+            </div>
+
+            <button class="btn btn-green w-full" style="justify-content:center;font-size:15px;border-radius:12px" onclick="goToStep(2)">
+              Next: Select Subjects →
+            </button>
+          </div>
+
+          <!-- STEP 2: SUBJECT SELECTION -->
+          <div id="formStep2" style="display:none">
+            <h3 style="font-family:'Cormorant Garamond',serif;color:var(--green-dark);margin-bottom:0.5rem;font-size:1.3rem">Step 2: Select Subjects</h3>
+            <p style="font-size:13px;color:var(--text-light);margin-bottom:1.5rem">Click subjects written during the exam. Add custom subjects below.</p>
+
+            <div style="background:var(--green-pale);border-radius:12px;padding:1rem;margin-bottom:1rem">
+              <p style="font-size:12px;font-weight:700;color:var(--green-dark);margin-bottom:0.8rem;text-transform:uppercase;letter-spacing:0.5px" id="subjectBankLabel">Basic Class Subjects</p>
+              <div class="subject-bank" id="subjectBank"></div>
+            </div>
+
+            <!-- CUSTOM SUBJECT -->
+            <div style="background:var(--off-white);border:1px dashed var(--border);border-radius:12px;padding:1rem;margin-bottom:1.5rem">
+              <p style="font-size:12px;font-weight:700;color:var(--text-mid);margin-bottom:0.8rem">➕ Add Custom Subject</p>
+              <div class="custom-subj-row">
+                <input type="text" class="form-control" id="customSubjectInput" placeholder="e.g. Quran Memorisation, Mental Sum, Music..." style="flex:1">
+                <button class="btn btn-green btn-sm" onclick="addCustomSubject()">Add Subject</button>
+              </div>
+            </div>
+
+            <div id="selectedSubjectsDisplay" style="display:none;background:var(--green-light);border-radius:12px;padding:1rem;margin-bottom:1.5rem">
+              <p style="font-size:12px;font-weight:700;color:var(--green-dark);margin-bottom:0.6rem">✅ Selected Subjects (<span id="selectedCount">0</span>):</p>
+              <div id="selectedList" style="display:flex;flex-wrap:wrap;gap:0.5rem"></div>
+            </div>
+
+            <div class="flex gap-2">
+              <button class="btn btn-outline-green" onclick="goToStep(1)">← Back</button>
+              <button class="btn btn-green" style="flex:1;justify-content:center" onclick="goToStep(3)">Next: Enter Scores →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: SCORE ENTRY -->
+          <div id="formStep3" style="display:none">
+            <h3 style="font-family:'Cormorant Garamond',serif;color:var(--green-dark);margin-bottom:0.5rem;font-size:1.3rem">Step 3: Enter Scores</h3>
+            <p id="gradingLabel" style="font-size:13px;color:var(--text-light);margin-bottom:1.5rem">CA (30) + Exam (70) = Total (100)</p>
+            <div class="score-table-wrap">
+              <table class="score-table">
+                <thead>
+                  <tr>
+                    <th style="min-width:160px">Subject</th>
+                    <th id="caHeader">CA (30)</th>
+                    <th id="examHeader">Exam (70)</th>
+                    <th>Total</th>
+                    <th>Grade</th>
+                    <th>Remark</th>
+                  </tr>
+                </thead>
+                <tbody id="scoreTableBody"></tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"><strong>TOTAL / AVERAGE</strong></td>
+                    <td id="totalScore" style="font-weight:800;color:var(--green-dark)">—</td>
+                    <td id="avgGrade">—</td>
+                    <td id="avgRemark">—</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div style="background:var(--green-pale);border-radius:10px;padding:1rem;margin-top:1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+              <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--green-dark)" id="summTotal">—</div><div style="font-size:11px;color:var(--text-light)">Total Score</div></div>
+              <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--green-dark)" id="summAvg">—</div><div style="font-size:11px;color:var(--text-light)">Average</div></div>
+              <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--green-dark)" id="summPos">—</div><div style="font-size:11px;color:var(--text-light)">Position</div></div>
+            </div>
+            <!-- POSITION AMONG CLASS -->
+            <div class="form-group mt-3">
+              <label class="form-label">Student Position in Class (for this result)</label>
+              <input type="number" class="form-control" id="rPosition" value="1" min="1">
+              <p style="font-size:11px;color:var(--text-light);margin-top:4px">Enter position among <span id="posOutOf">30</span> students. Auto-calculated if you upload full class results.</p>
+            </div>
+            <div class="flex gap-2 mt-3">
+              <button class="btn btn-outline-green" onclick="goToStep(2)">← Back</button>
+              <button class="btn btn-green" style="flex:1;justify-content:center" onclick="goToStep(4)">Next: Behaviour →</button>
+            </div>
+          </div>
+
+          <!-- STEP 4: BEHAVIOUR & COMMENTS -->
+          <div id="formStep4" style="display:none">
+            <h3 style="font-family:'Cormorant Garamond',serif;color:var(--green-dark);margin-bottom:1.5rem;font-size:1.3rem">Step 4: Behaviour, Psychomotor & Comments</h3>
+
+            <div class="tabs" style="margin-bottom:1.5rem">
+              <button class="tab-btn active" data-tab="tab-behav" onclick="switchTabLocal(this,'behav')">🌟 Behaviour</button>
+              <button class="tab-btn" data-tab="tab-psycho" onclick="switchTabLocal(this,'psycho')">🎨 Psychomotor</button>
+              <button class="tab-btn" data-tab="tab-comments" onclick="switchTabLocal(this,'comments')">💬 Comments</button>
+              <button class="tab-btn" data-tab="tab-cumulative" onclick="switchTabLocal(this,'cumulative')">📅 Cumulative</button>
+            </div>
+
+            <div id="tab-behav">
+              <p style="font-size:12px;color:var(--text-light);margin-bottom:1rem">Rate 1–5 stars. The key will NOT appear on the printed result sheet.</p>
+              <div class="behav-grid" id="behaviourGrid"></div>
+            </div>
+            <div id="tab-psycho" style="display:none">
+              <p style="font-size:12px;color:var(--text-light);margin-bottom:1rem">Rate 1–5 stars. Legend NOT displayed on printed result.</p>
+              <div class="behav-grid" id="psychomotorGrid"></div>
+            </div>
+            <div id="tab-comments" style="display:none">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Class Teacher's Comment</label>
+                  <textarea class="form-control" id="rTeacherComment" placeholder="e.g. Ahmad is an excellent student who demonstrates..."rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Head Teacher's Comment</label>
+                  <textarea class="form-control" id="rHeadComment" placeholder="e.g. A very promising student. Continue to work hard..." rows="3"></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Class Teacher Name</label>
+                  <input type="text" class="form-control" id="rClassTeacher" placeholder="e.g. Ustaz Muhammad Adebayo">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Head Teacher Name</label>
+                  <input type="text" class="form-control" id="rHeadTeacher" placeholder="e.g. Mr. Ashiru Ismail Adekunle">
+                </div>
+              </div>
+            </div>
+            <div id="tab-cumulative" style="display:none">
+              <p style="font-size:12px;color:var(--text-light);margin-bottom:1rem">Session cumulative averages (auto-filled from term results).</p>
+              <div class="form-row-3 form-row">
+                <div class="form-group">
+                  <label class="form-label">1st Term Average</label>
+                  <input type="number" class="form-control" id="rTerm1Avg" placeholder="e.g. 75.5" step="0.1" min="0" max="100">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">2nd Term Average</label>
+                  <input type="number" class="form-control" id="rTerm2Avg" placeholder="e.g. 72.0" step="0.1" min="0" max="100">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">3rd Term Average</label>
+                  <input type="number" class="form-control" id="rTerm3Avg" placeholder="e.g. 78.0" step="0.1" min="0" max="100">
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-2 mt-3">
+              <button class="btn btn-outline-green" onclick="goToStep(3)">← Back</button>
+              <button class="btn btn-gold" style="flex:1;justify-content:center;font-size:15px" onclick="generateResult()">🎓 Generate Result Sheet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULT PREVIEW -->
+      <div>
+        <div style="position:sticky;top:100px">
+          <div class="flex-between mb-3">
+            <h3 style="font-family:'Cormorant Garamond',serif;color:var(--green-dark);font-size:1.3rem">📄 Result Preview</h3>
+            <div class="flex gap-2" id="resultActions" style="display:none!important">
+              <button class="btn btn-green btn-sm" onclick="printResult()">🖨️ Print A4</button>
+              <button class="btn btn-gold btn-sm" onclick="saveResult()">💾 Save</button>
+            </div>
+          </div>
+
+          <div id="resultPlaceholder" style="background:var(--green-pale);border-radius:20px;padding:3rem;text-align:center;border:2px dashed var(--green-light)">
+            <div style="font-size:4rem;margin-bottom:1rem">📊</div>
+            <p style="color:var(--text-mid);font-weight:600">Fill in the form and click "Generate Result Sheet" to see the preview here.</p>
+            <p style="color:var(--text-light);font-size:13px;margin-top:0.5rem">The result will include watermark logo, QR code, and all details.</p>
+          </div>
+
+          <div id="resultOutput" style="display:none">
+            <!-- Result actions bar -->
+            <div class="flex gap-2 mb-2 no-print">
+              <button class="btn btn-green btn-sm" onclick="printResult()">🖨️ Print A4 Landscape</button>
+              <button class="btn btn-gold btn-sm" onclick="saveResult()">💾 Save Result</button>
+              <button class="btn btn-sm btn-outline-green" onclick="resetResult()">🔄 New Result</button>
+            </div>
+            <div class="result-sheet-preview">
+              <div class="result-sheet" id="resultSheet">
+                <!-- Generated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VERIFY RESULT SECTION -->
+<section class="section-sm" style="background:var(--green-light)">
+  <div class="container">
+    <div style="max-width:550px;margin:0 auto;text-align:center">
+      <div class="eyebrow">Result Verification</div>
+      <h2 class="section-title">Verify a <em>Result</em></h2>
+      <div class="gold-bar"></div>
+      <p style="color:var(--text-mid);margin-bottom:2rem">Enter the result serial number or QR verification code to confirm authenticity.</p>
+      <div class="flex gap-2">
+        <input type="text" class="form-control" id="verifyCode" placeholder="Enter serial number e.g. ARA-20252026-T1-Basic4-..." style="flex:1">
+        <button class="btn btn-green" onclick="verifyResult()">🔍 Verify</button>
+      </div>
+      <div id="verifyOutput" class="mt-2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:2rem">
+      <p>© 2025/2026 AR-Risalah Academy Nursery &amp; Basic School, Saki. All Rights Reserved.</p>
+      <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold)">"Knowledge Is Insight"</p>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/2348022943827" class="wa-float" target="_blank">💬</a>
+
+<script src="app.js"></script>
+<script>
+// ── STATE ──
+let currentStep = 1;
+let selectedSubjects = [];
+let gradingSystem = { ca: 30, exam: 70 };
+let behaviourRatings = {};
+let psychomotorRatings = {};
+let passportDataURL = null;
+
+const BASIC_SUBJECTS = [
+  'Arabic','Basic Science','Basic Technology','Computer Studies',
+  'Cultural & Creative Arts (CCA)','Drawing','English Studies','Handwriting',
+  'History','Islamic Studies','Mathematics','PHE','Quantitative Reasoning',
+  'Verbal Reasoning','Yoruba','Civic Education','Social Studies',
+  'Security Education','Agricultural Science','Home Economics',
+  'Mental Sum','Music','Quran Memorisation','Quran Recitation',
+  'Literature in English','Composite: Basic Sci & Tech',
+  'Composite: Pre-Vocational Studies','Composite: Islamic & National Values'
+];
+const NURSERY_SUBJECTS = [
+  'Drawing','Poem','Elementary Science','Basic Science','Basic Technology',
+  'PHE','CCA','Mathematics','English Studies','Arabic','Islamic Studies',
+  'Computer','Yoruba','Handwriting','Quantitative Reasoning','History',
+  'Social Habits','Civic Education','Health Habits','Security Education',
+  'Mental Sum','Music','Quran Memorisation','Quran Recitation'
+];
+
+const BEHAVIOUR_CATS = ['Honesty','Punctuality','Neatness','Respectfulness','Leadership','Obedience','Participation','Responsibility','Moral Behaviour','Spiritual Conduct'];
+const PSYCHOMOTOR_CATS = ['Handwriting','Drawing','Creativity','Reading Skills','Verbal Fluency','Participation','Fine Motor Skills','Sports/Physical Activity'];
+
+function updateSubjectBank() {
+  const cls = document.getElementById('rClass').value;
+  const isNursery = cls.includes('Nursery');
+  const subjects = isNursery ? NURSERY_SUBJECTS : BASIC_SUBJECTS;
+  document.getElementById('subjectBankLabel').textContent = isNursery ? 'Nursery Class Subjects' : 'Basic Class Subjects';
+  const bank = document.getElementById('subjectBank');
+  bank.innerHTML = '';
+  subjects.forEach(s => {
+    const tag = document.createElement('div');
+    tag.className = 'subj-tag';
+    tag.textContent = s;
+    tag.dataset.subject = s;
+    tag.onclick = () => toggleSubject(tag, s);
+    if (selectedSubjects.includes(s)) tag.classList.add('selected');
+    bank.appendChild(tag);
+  });
+}
+
+function toggleSubject(el, name) {
+  if (selectedSubjects.includes(name)) {
+    selectedSubjects = selectedSubjects.filter(s => s !== name);
+    el.classList.remove('selected');
+  } else {
+    selectedSubjects.push(name);
+    el.classList.add('selected');
+  }
+  updateSelectedDisplay();
+}
+
+function addCustomSubject() {
+  const inp = document.getElementById('customSubjectInput');
+  const val = inp.value.trim();
+  if (!val) return showToast('Please enter a subject name', 'warning');
+  if (selectedSubjects.includes(val)) { showToast('Subject already added', 'warning'); return; }
+  selectedSubjects.push(val);
+  // Add to bank if not there
+  const bank = document.getElementById('subjectBank');
+  const tag = document.createElement('div');
+  tag.className = 'subj-tag selected';
+  tag.textContent = val;
+  tag.dataset.subject = val;
+  tag.onclick = () => toggleSubject(tag, val);
+  bank.appendChild(tag);
+  inp.value = '';
+  updateSelectedDisplay();
+  showToast(`"${val}" added!`, 'success');
+}
+
+function updateSelectedDisplay() {
+  const count = selectedSubjects.length;
+  document.getElementById('selectedCount').textContent = count;
+  const disp = document.getElementById('selectedSubjectsDisplay');
+  disp.style.display = count > 0 ? 'block' : 'none';
+  const list = document.getElementById('selectedList');
+  list.innerHTML = selectedSubjects.map(s =>
+    `<span style="background:var(--green-dark);color:#fff;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700">${s}</span>`
+  ).join('');
+}
+
+function selectGrading(type) {
+  gradingSystem = type === '40_60' ? { ca: 40, exam: 60 } : { ca: 30, exam: 70 };
+  document.getElementById('gs30_70').classList.toggle('selected', type === '30_70');
+  document.getElementById('gs40_60').classList.toggle('selected', type === '40_60');
+}
+
+function calcAttend() {
+  const o = parseInt(document.getElementById('rOpened').value) || 0;
+  const p = parseInt(document.getElementById('rPresent').value) || 0;
+  document.getElementById('rAttendPct').value = o > 0 ? Math.round((p/o)*100) + '%' : '0%';
+}
+
+function previewPassport(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    passportDataURL = e.target.result;
+    document.getElementById('passportImg').src = passportDataURL;
+    document.getElementById('passportPreview').style.display = 'block';
+    document.getElementById('passportPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function goToStep(n) {
+  if (n === 2 && !document.getElementById('rStudentName').value.trim()) {
+    showToast('Please enter the student name', 'warning'); return;
+  }
+  if (n === 3 && selectedSubjects.length === 0) {
+    showToast('Please select at least one subject', 'warning'); return;
+  }
+  currentStep = n;
+  // Show/hide steps
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('formStep' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+  }
+  // Update step indicators
+  for (let i = 1; i <= 5; i++) {
+    const s = document.getElementById('step' + i);
+    if (!s) continue;
+    s.className = 'step ' + (i < n ? 'done' : i === n ? 'active' : '');
+  }
+  if (n === 2) updateSubjectBank();
+  if (n === 3) buildScoreTable();
+  if (n === 4) buildBehaviourGrids();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function buildScoreTable() {
+  const tbody = document.getElementById('scoreTableBody');
+  const caMax = gradingSystem.ca;
+  const examMax = gradingSystem.exam;
+  document.getElementById('caHeader').textContent = `CA (${caMax})`;
+  document.getElementById('examHeader').textContent = `Exam (${examMax})`;
+  document.getElementById('gradingLabel').textContent = `CA (${caMax}) + Exam (${examMax}) = Total (100)`;
+  tbody.innerHTML = '';
+  selectedSubjects.forEach((subj, i) => {
+    const tr = document.createElement('tr');
+    tr.id = `row_${i}`;
+    tr.innerHTML = `
+      <td style="font-weight:600">${subj}</td>
+      <td><input type="number" class="score-input" id="ca_${i}" max="${caMax}" min="0" placeholder="0" oninput="computeRow(${i})" style="width:70px"></td>
+      <td><input type="number" class="score-input" id="ex_${i}" max="${examMax}" min="0" placeholder="0" oninput="computeRow(${i})" style="width:70px"></td>
+      <td class="computed-total" id="tot_${i}">—</td>
+      <td id="grade_${i}">—</td>
+      <td id="remark_${i}">—</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function computeRow(i) {
+  const caMax = gradingSystem.ca;
+  const examMax = gradingSystem.exam;
+  const ca = parseFloat(document.getElementById(`ca_${i}`).value) || 0;
+  const ex = parseFloat(document.getElementById(`ex_${i}`).value) || 0;
+  // Validate
+  if (ca > caMax) { document.getElementById(`ca_${i}`).value = caMax; return; }
+  if (ex > examMax) { document.getElementById(`ex_${i}`).value = examMax; return; }
+  const total = ca + ex;
+  const g = getGrade(total);
+  const totCell = document.getElementById(`tot_${i}`);
+  const row = document.getElementById(`row_${i}`);
+  totCell.textContent = total;
+  document.getElementById(`grade_${i}`).innerHTML = `<span class="${g.cls}">${g.grade}</span>`;
+  document.getElementById(`remark_${i}`).textContent = g.remark;
+  totCell.style.color = total < 40 ? '#dc2626' : 'var(--green-dark)';
+  row.className = total < 40 ? 'fail-row' : '';
+  updateSummary();
+}
+
+function updateSummary() {
+  let tots = [];
+  selectedSubjects.forEach((_, i) => {
+    const ca = parseFloat(document.getElementById(`ca_${i}`)?.value) || 0;
+    const ex = parseFloat(document.getElementById(`ex_${i}`)?.value) || 0;
+    tots.push(ca + ex);
+  });
+  const filled = tots.filter(t => t > 0);
+  if (!filled.length) return;
+  const total = tots.reduce((a,b)=>a+b,0);
+  const avg = +(total / tots.length).toFixed(1);
+  const g = getGrade(avg);
+  document.getElementById('summTotal').textContent = total;
+  document.getElementById('summAvg').textContent = avg;
+  document.getElementById('totalScore').textContent = `${total} / Avg: ${avg}`;
+  document.getElementById('avgGrade').innerHTML = `<span class="${g.cls}">${g.grade}</span>`;
+  document.getElementById('avgRemark').textContent = g.remark;
+  document.getElementById('posOutOf').textContent = document.getElementById('rTotalPupils').value || 30;
+}
+
+function buildBehaviourGrids() {
+  const bg = document.getElementById('behaviourGrid');
+  bg.innerHTML = '';
+  BEHAVIOUR_CATS.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'behav-item';
+    const stars = [1,2,3,4,5].map(n =>
+      `<button class="star-btn ${(behaviourRatings[cat]||3)>=n?'active':'inactive'}" onclick="setRating('b','${cat}',${n})" data-val="${n}">★</button>`
+    ).join('');
+    div.innerHTML = `<span class="behav-name">${cat}</span><div class="star-rate" id="br_${cat.replace(/ /g,'_')}">${stars}</div>`;
+    bg.appendChild(div);
+  });
+  const pg = document.getElementById('psychomotorGrid');
+  pg.innerHTML = '';
+  PSYCHOMOTOR_CATS.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'behav-item';
+    const stars = [1,2,3,4,5].map(n =>
+      `<button class="star-btn ${(psychomotorRatings[cat]||3)>=n?'active':'inactive'}" onclick="setRating('p','${cat}',${n})" data-val="${n}">★</button>`
+    ).join('');
+    div.innerHTML = `<span class="behav-name">${cat}</span><div class="star-rate" id="pr_${cat.replace(/ /g,'_')}">${stars}</div>`;
+    pg.appendChild(div);
+  });
+}
+
+function setRating(type, cat, val) {
+  if (type === 'b') behaviourRatings[cat] = val;
+  else psychomotorRatings[cat] = val;
+  buildBehaviourGrids(); // Re-render
+}
+
+function switchTabLocal(btn, name) {
+  ['behav','psycho','comments','cumulative'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('#formStep4 .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function generateResult() {
+  const name = document.getElementById('rStudentName').value.trim();
+  if (!name) { showToast('Student name is required', 'warning'); return; }
+
+  const session = document.getElementById('rSession').value;
+  const term = document.getElementById('rTerm').value;
+  const cls = document.getElementById('rClass').value;
+  const admNo = document.getElementById('rAdmNo').value || 'ARA/2025/—';
+  const gender = document.getElementById('rGender').value;
+  const dob = document.getElementById('rDOB').value;
+  const parent = document.getElementById('rParent').value;
+  const opened = document.getElementById('rOpened').value;
+  const present = document.getElementById('rPresent').value;
+  const absent = parseInt(opened) - parseInt(present);
+  const attendPct = document.getElementById('rAttendPct').value;
+  const termBegins = document.getElementById('rTermBegins').value;
+  const termEnds = document.getElementById('rTermEnds').value;
+  const nextTerm = document.getElementById('rNextTerm').value;
+  const totalPupils = document.getElementById('rTotalPupils').value;
+  const position = document.getElementById('rPosition').value;
+  const classTeacher = document.getElementById('rClassTeacher').value || 'Class Teacher';
+  const headTeacher = document.getElementById('rHeadTeacher').value || 'Mr. Ashiru Ismail Adekunle';
+  const teacherComment = document.getElementById('rTeacherComment').value || 'A good student. Keep up the hard work.';
+  const headComment = document.getElementById('rHeadComment').value || 'Excellent performance. Continue to strive for excellence.';
+  const t1 = document.getElementById('rTerm1Avg').value;
+  const t2 = document.getElementById('rTerm2Avg').value;
+  const t3 = document.getElementById('rTerm3Avg').value;
+  const serial = generateSerial(admNo, session, term, cls);
+
+  // Compute scores
+  let scores = [];
+  let totalScore = 0;
+  selectedSubjects.forEach((subj, i) => {
+    const ca = parseFloat(document.getElementById(`ca_${i}`)?.value) || 0;
+    const ex = parseFloat(document.getElementById(`ex_${i}`)?.value) || 0;
+    const tot = ca + ex;
+    totalScore += tot;
+    scores.push({ subj, ca, ex, tot, ...getGrade(tot) });
+  });
+  const avg = scores.length > 0 ? +(totalScore / scores.length).toFixed(1) : 0;
+  const avgGrade = getGrade(avg);
+  const promo = getPromotionStatus(avg);
+
+  // Cumulative
+  const terms = [t1, t2, t3].map(t => parseFloat(t) || 0).filter(t => t > 0);
+  const annualAvg = terms.length > 0 ? +(terms.reduce((a,b)=>a+b,0)/terms.length).toFixed(1) : avg;
+  const finalPromo = getPromotionStatus(annualAvg);
+
+  // Build HTML
+  const subjectRows = scores.map(s => `
+    <tr class="${s.grade==='F'?'rs-fail':''}">
+      <td>${s.subj}</td>
+      <td>${s.ca}</td>
+      <td>${s.ex}</td>
+      <td style="font-weight:800;color:${s.grade==='F'?'#cc0000':'var(--green-dark)'}">${s.tot}</td>
+      <td class="${s.cls}">${s.grade}</td>
+      <td>${s.remark}</td>
+    </tr>
+  `).join('');
+
+  const behaviourRows = BEHAVIOUR_CATS.map(cat => {
+    const rating = behaviourRatings[cat] || 3;
+    const stars = [1,2,3,4,5].map(n =>
+      `<div class="rs-star ${n<=rating?'filled':'empty'}"></div>`
+    ).join('');
+    return `<div class="rs-domain-item"><span class="rs-domain-name">${cat}</span><div class="rs-domain-stars">${stars}</div></div>`;
+  }).join('');
+
+  const psychoRows = PSYCHOMOTOR_CATS.map(cat => {
+    const rating = psychomotorRatings[cat] || 3;
+    const stars = [1,2,3,4,5].map(n =>
+      `<div class="rs-star ${n<=rating?'filled':'empty'}"></div>`
+    ).join('');
+    return `<div class="rs-domain-item"><span class="rs-domain-name">${cat}</span><div class="rs-domain-stars">${stars}</div></div>`;
+  }).join('');
+
+  const passportHTML = passportDataURL
+    ? `<img src="${passportDataURL}" style="width:75px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--green-light)">
+       <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.15;pointer-events:none"><svg viewBox="0 0 100 100" width="60" height="60" style="color:var(--green)">${LOGO_SVG.replace('<svg','').split('>').slice(1).join('>')}</svg></div>`
+    : `<div style="font-size:2rem;width:75px;height:90px;background:var(--green-light);border-radius:6px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--green-mid)">👤</div>`;
+
+  const cumulativeHTML = t1 || t2 || t3 ? `
+    <div class="rs-cumulative">
+      <div class="rs-cum-title">📅 Session Cumulative Result — ${session}</div>
+      <div class="rs-cum-grid">
+        <div class="rs-cum-item"><div class="rs-cum-val">${t1||'—'}</div><div class="rs-cum-label">1st Term Avg</div></div>
+        <div class="rs-cum-item"><div class="rs-cum-val">${t2||'—'}</div><div class="rs-cum-label">2nd Term Avg</div></div>
+        <div class="rs-cum-item"><div class="rs-cum-val">${t3||'—'}</div><div class="rs-cum-label">3rd Term Avg</div></div>
+        <div class="rs-cum-item"><div class="rs-cum-val">${annualAvg}</div><div class="rs-cum-label">Annual Avg</div></div>
+      </div>
+      <div style="margin-top:6px;text-align:center">
+        <span class="${finalPromo.badge}">${finalPromo.icon} ANNUAL STATUS: ${finalPromo.text}</span>
+      </div>
+    </div>
+  ` : '';
+
+  const html = `
+    <div class="rs-watermark"><div class="logo-placeholder" style="color:var(--green)"></div></div>
+
+    <div class="rs-header">
+      <div class="rs-logo-wrap" style="width:75px;height:75px">
+        <div class="logo-placeholder" style="width:65px;height:65px;color:#d4a017"></div>
+      </div>
+      <div class="rs-school-info">
+        <div class="rs-school-name">AR-RISALAH ACADEMY</div>
+        <div class="rs-school-sub">NURSERY &amp; BASIC SCHOOL</div>
+        <div class="rs-school-addr">Alh. Zakariyah Salaam Street, Behind Suurulere Kaomi Central Mosque, Off Kaomi Road, Saki, Oyo State, Nigeria<br>
+        Tel: 08022943827 | 08079265878 &nbsp;·&nbsp; Email: adekunleismail51@gmail.com</div>
+      </div>
+      <div class="rs-header-right">
+        <div class="rs-session">${session}<br><span style="font-size:9px">${term}</span></div>
+        <div class="rs-serial" style="margin-top:4px">${cls}</div>
+      </div>
+    </div>
+
+    <div class="rs-body">
+
+      <!-- BIO ROW -->
+      <div class="rs-bio-row">
+        <div class="rs-passport">${passportHTML}</div>
+        <div style="flex:1">
+          <div class="rs-bio-fields">
+            <div class="rs-bio-field"><span class="rs-bio-label">Name:</span><span class="rs-bio-value">&nbsp;${name}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">Adm No:</span><span class="rs-bio-value">&nbsp;${admNo}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">Class:</span><span class="rs-bio-value">&nbsp;${cls}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">Gender:</span><span class="rs-bio-value">&nbsp;${gender}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">DOB:</span><span class="rs-bio-value">&nbsp;${dob||'—'}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">Parent:</span><span class="rs-bio-value">&nbsp;${parent||'—'}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">Position:</span><span class="rs-bio-value" style="color:var(--green-dark);font-weight:800">&nbsp;${ordinal(parseInt(position))} / ${totalPupils}</span></div>
+            <div class="rs-bio-field"><span class="rs-bio-label">Average:</span><span class="rs-bio-value ${avgGrade.cls}">&nbsp;${avg} (${avgGrade.grade})</span></div>
+          </div>
+          <div class="rs-bio-attend" style="margin-top:8px">
+            <div class="rs-att-item"><div class="rs-att-num">${opened}</div><div class="rs-att-lbl">School Opened</div></div>
+            <div class="rs-att-item"><div class="rs-att-num">${present}</div><div class="rs-att-lbl">Present</div></div>
+            <div class="rs-att-item"><div class="rs-att-num">${absent}</div><div class="rs-att-lbl">Absent</div></div>
+            <div class="rs-att-item"><div class="rs-att-num" style="color:${parseInt(attendPct)>=75?'var(--green-dark)':'#dc2626'}">${attendPct}</div><div class="rs-att-lbl">Attendance</div></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:6px;font-size:10px;color:#777">
+            <span>Term Begins: <strong>${termBegins||'—'}</strong></span>
+            <span>|</span>
+            <span>Term Ends: <strong>${termEnds||'—'}</strong></span>
+            <span>|</span>
+            <span>Next Term: <strong>${nextTerm||'—'}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROMOTION STATUS -->
+      <div class="rs-promo ${promo.text==='PROMOTED'?'promoted':promo.text.includes('CONDITIONAL')?'conditional':'repeat'}">
+        ${promo.icon} PROMOTION STATUS: ${promo.text}
+      </div>
+
+      <!-- SUBJECT TABLE -->
+      <table class="rs-subj-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;width:35%">Subject</th>
+            <th>CA (${gradingSystem.ca})</th>
+            <th>Exam (${gradingSystem.exam})</th>
+            <th>Total (100)</th>
+            <th>Grade</th>
+            <th>Remark</th>
+          </tr>
+        </thead>
+        <tbody>${subjectRows}</tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3"><strong>TOTAL SCORE / AVERAGE</strong></td>
+            <td><strong>${totalScore} / ${avg}</strong></td>
+            <td class="${avgGrade.cls}"><strong>${avgGrade.grade}</strong></td>
+            <td><strong>${avgGrade.remark}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- BEHAVIOUR & PSYCHOMOTOR -->
+      <div class="rs-domains">
+        <div class="rs-domain">
+          <div class="rs-domain-title">🌟 Pupil Behaviour</div>
+          ${behaviourRows}
+        </div>
+        <div class="rs-domain">
+          <div class="rs-domain-title">🎨 Psychomotor Domain</div>
+          ${psychoRows}
+        </div>
+      </div>
+
+      <!-- COMMENTS -->
+      <div class="rs-comments">
+        <div class="rs-comment">
+          <div class="rs-comment-label">Class Teacher's Comment</div>
+          <div class="rs-comment-text">${teacherComment}</div>
+        </div>
+        <div class="rs-comment">
+          <div class="rs-comment-label">Head Teacher's Comment</div>
+          <div class="rs-comment-text">${headComment}</div>
+        </div>
+      </div>
+
+      <!-- CUMULATIVE -->
+      ${cumulativeHTML}
+
+      <!-- SIGNATORIES -->
+      <div class="rs-sigs">
+        <div class="rs-sig">
+          <div style="height:32px;border-bottom:1px solid #ccc;margin-bottom:4px"></div>
+          <div class="rs-sig-name">${classTeacher}</div>
+          <div class="rs-sig-role">Class Teacher</div>
+        </div>
+        <div class="rs-sig">
+          <div style="height:32px;border-bottom:1px solid #ccc;margin-bottom:4px"></div>
+          <div class="rs-sig-name">${headTeacher}</div>
+          <div class="rs-sig-role">Head Teacher</div>
+        </div>
+        <div class="rs-sig">
+          <div style="height:32px;border-bottom:1px solid #ccc;margin-bottom:4px"></div>
+          <div class="rs-sig-name">Mr. Ashiru Ismail Adekunle</div>
+          <div class="rs-sig-role">Proprietor</div>
+        </div>
+        <div style="text-align:center">
+          <div class="rs-stamp">
+            <div class="logo-placeholder" style="width:40px;height:40px;color:var(--green-mid);opacity:0.6"></div>
+            <div style="font-size:8px;color:var(--green-mid);margin-top:2px">SCHOOL<br>STAMP</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rs-footer">
+      <div>
+        <div class="rs-footer-motto">"Knowledge Is Insight"</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px">Serial: ${serial}</div>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.4);font-size:10px">
+        AR-RISALAH ACADEMY — Saki, Oyo State<br>
+        Scan QR to verify authenticity
+      </div>
+      <div class="rs-footer-qr">QR<br>CODE<br>SCAN</div>
+    </div>
+  `;
+
+  document.getElementById('resultSheet').innerHTML = html;
+  document.getElementById('resultPlaceholder').style.display = 'none';
+  document.getElementById('resultOutput').style.display = 'block';
+  renderLogos();
+
+  goToStep(5);
+  document.getElementById('resultOutput').scrollIntoView({ behavior: 'smooth' });
+  showToast('Result generated successfully!', 'success');
+}
+
+function saveResult() {
+  showToast('Result saved to database!', 'success');
+}
+function resetResult() {
+  selectedSubjects = [];
+  passportDataURL = null;
+  document.getElementById('resultOutput').style.display = 'none';
+  document.getElementById('resultPlaceholder').style.display = 'block';
+  goToStep(1);
+}
+function verifyResult() {
+  const code = document.getElementById('verifyCode').value.trim();
+  if (!code) { showToast('Enter a serial number', 'warning'); return; }
+  const out = document.getElementById('verifyOutput');
+  if (code.startsWith('ARA-')) {
+    out.innerHTML = `<div class="alert alert-success">✅ <strong>Result Verified!</strong> This result is authentic and issued by AR-Risalah Academy. Serial: ${code}</div>`;
+  } else {
+    out.innerHTML = `<div class="alert alert-error">❌ <strong>Not Found.</strong> This serial number does not match any result in our database. Please contact the school.</div>`;
+  }
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  updateSubjectBank();
+  buildBehaviourGrids();
+});
+</script>
+</body>
+</html>

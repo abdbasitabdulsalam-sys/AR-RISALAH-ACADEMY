@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AR-Risalah Academy Nursery & Basic School — Knowledge Is Insight. Saki, Oyo State.">
+<title>AR-Risalah Academy — Home</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* PAGE-SPECIFIC */
+.hero{min-height:100vh;background:var(--g-hero);display:flex;align-items:center;position:relative;overflow:hidden;padding-top:112px}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+.orb1{width:600px;height:600px;background:rgba(212,160,23,0.12);top:-100px;right:-150px}
+.orb2{width:400px;height:400px;background:rgba(0,180,0,0.08);bottom:-80px;left:-80px}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center;position:relative;z-index:2}
+.hero-arabic{font-family:'Amiri',serif;font-size:1.15rem;color:rgba(212,160,23,0.75);margin-bottom:1rem;letter-spacing:1px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1rem}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{color:rgba(255,255,255,0.68);font-size:1rem;line-height:1.85;margin-bottom:2rem;max-width:480px}
+.hero-btns{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:2rem}
+.hero-motto{background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.25);border-radius:12px;padding:1rem 1.2rem;display:inline-block}
+.hero-motto p{font-family:'Amiri',serif;font-style:italic;color:var(--gold);font-size:1.2rem}
+.hero-motto small{color:rgba(255,255,255,0.4);font-size:10px;letter-spacing:2px;text-transform:uppercase;display:block;margin-top:2px}
+
+/* HERO CARD */
+.hero-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(212,160,23,0.2);border-radius:24px;padding:2rem;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hc-logo-wrap{text-align:center;margin-bottom:1.5rem}
+.hc-logo{width:100px;height:100px;margin:0 auto 1rem;border-radius:50%;border:2px solid rgba(212,160,23,0.5);background:rgba(212,160,23,0.08);display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.hc-logo svg{width:80px;height:80px}
+.hc-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#fff;font-weight:700;line-height:1.3;text-align:center}
+.hc-sub{font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-top:3px}
+.hc-divider{height:1px;background:rgba(255,255,255,0.08);margin:1.2rem 0}
+.hc-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.hc-stat{background:rgba(0,0,0,0.25);border-radius:12px;padding:0.9rem;text-align:center}
+.hc-stat-n{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--gold)}
+.hc-stat-l{font-size:10px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.8px;margin-top:1px}
+.hc-contact{background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.18);border-radius:12px;padding:1rem;margin-top:1rem}
+.hc-contact a{display:block;color:var(--gold);text-decoration:none;font-size:12px;font-weight:600;padding:2px 0}
+.hc-contact a:last-child{color:rgba(255,255,255,0.5);font-size:11px}
+
+/* QUICK BAR */
+.quick-bar{background:var(--white);box-shadow:0 4px 20px rgba(0,100,0,0.1);position:relative;z-index:10}
+.qb-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex}
+.qb-item{flex:1;display:flex;align-items:center;gap:12px;padding:1.2rem 1rem;border-right:1px solid var(--border);text-decoration:none;transition:background 0.2s;cursor:pointer}
+.qb-item:last-child{border-right:none}
+.qb-item:hover{background:var(--green-pale)}
+.qb-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.qbi-1 .qb-icon{background:#e8f5e9}
+.qbi-2 .qb-icon{background:#fff8e1}
+.qbi-3 .qb-icon{background:#fce4ec}
+.qbi-4 .qb-icon{background:#e3f2fd}
+.qb-text strong{display:block;font-size:13px;font-weight:700;color:var(--green-dark)}
+.qb-text span{font-size:11px;color:var(--text-light)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-features{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:1.5rem}
+.af{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--green-light);border-radius:10px;border-left:3px solid var(--green)}
+.af-i{font-size:1.1rem}
+.af-t{font-size:12px;font-weight:700;color:var(--green-dark);line-height:1.4}
+.about-visual{position:relative;height:480px}
+.av-card{position:absolute;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,100,0,0.2)}
+.av-main{top:0;right:0;width:290px;height:360px;background:linear-gradient(145deg,#002a00,#005a00);padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem}
+.av-accent{bottom:0;left:0;width:210px;height:230px;background:linear-gradient(145deg,#b8860b,#d4a017);padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.av-float{position:absolute;top:45%;left:38%;transform:translate(-50%,-50%);background:#fff;border-radius:14px;padding:0.9rem 1.4rem;box-shadow:0 10px 40px rgba(0,0,0,0.2);z-index:5;text-align:center;white-space:nowrap}
+.av-float strong{display:block;font-size:1.3rem;font-weight:700;color:var(--green-dark)}
+.av-float span{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px}
+
+/* FEES */
+.fees-bg{background:var(--green-dark)}
+.fees-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.fee-card{background:rgba(255,255,255,0.05);border:1px solid rgba(212,160,23,0.2);border-radius:22px;padding:2rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.fee-card.feat{border-color:var(--gold);background:rgba(212,160,23,0.07)}
+.fee-card.feat::before{content:'POPULAR';position:absolute;top:.8rem;right:.8rem;background:var(--gold);color:#001a00;font-size:9px;font-weight:800;padding:3px 9px;border-radius:50px;letter-spacing:1px}
+.fee-card:hover{transform:translateY(-5px)}
+.fee-emoji{font-size:2.2rem;margin-bottom:0.8rem}
+.fee-card h3{color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:0.4rem}
+.fee-price{font-size:2.3rem;font-weight:700;color:var(--gold);font-family:'Cormorant Garamond',serif;margin:0.8rem 0}
+.fee-price small{font-size:12px;color:rgba(255,255,255,0.4);font-family:'DM Sans',sans-serif;font-weight:400}
+.fee-list{list-style:none;text-align:left;margin-bottom:1.5rem}
+.fee-list li{color:rgba(255,255,255,0.65);font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:7px}
+.fee-list li::before{content:'✓';color:var(--gold);font-weight:700}
+
+/* ANTHEM */
+.anthem-bg{background:linear-gradient(135deg,#002200 0%,#004400 50%,#002200 100%);position:relative;overflow:hidden}
+.anthem-bg::before{content:'';position:absolute;inset:0;background:repeating-conic-gradient(rgba(212,160,23,0.03) 0% 25%, transparent 0% 50%) 0/40px 40px}
+.anthem-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:2}
+.anthem-card{background:rgba(255,255,255,0.05);border:1px solid rgba(212,160,23,0.25);border-radius:24px;padding:2.5rem;position:relative}
+.anthem-card::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:10rem;color:rgba(212,160,23,0.08);position:absolute;top:-2rem;left:1rem;line-height:1;pointer-events:none}
+.anthem-title{font-family:'Amiri',serif;color:var(--gold);font-size:0.95rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;font-style:italic}
+.anthem-lines{list-style:none}
+.anthem-lines li{font-family:'Amiri',serif;font-size:1.45rem;color:#fff;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.5}
+.anthem-lines li.bold-line{font-weight:700;color:var(--gold)}
+.anthem-actions{display:flex;gap:0.8rem;margin-top:1.5rem;flex-wrap:wrap}
+.anthem-play-wrap{display:flex;align-items:center;gap:8px}
+.play-bars{display:flex;align-items:flex-end;gap:3px;height:22px}
+.play-bar{width:4px;border-radius:2px;background:var(--gold);height:6px;transition:height 0.2s}
+.playing .play-bar:nth-child(1){animation:pbar 0.8s ease-in-out infinite}
+.playing .play-bar:nth-child(2){animation:pbar 0.8s ease-in-out 0.12s infinite}
+.playing .play-bar:nth-child(3){animation:pbar 0.8s ease-in-out 0.28s infinite}
+.playing .play-bar:nth-child(4){animation:pbar 0.8s ease-in-out 0.08s infinite}
+.playing .play-bar:nth-child(5){animation:pbar 0.8s ease-in-out 0.2s infinite}
+@keyframes pbar{0%,100%{height:4px}50%{height:20px}}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:220px 220px;gap:1rem}
+.gitem{border-radius:16px;overflow:hidden;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;transition:all 0.3s}
+.gitem:hover{transform:scale(1.02)}
+.gitem.g-big{grid-column:span 2;grid-row:span 2}
+.gitem-overlay{position:absolute;inset:0;background:rgba(0,40,0,0.5);opacity:0;transition:opacity 0.3s;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff}
+.gitem:hover .gitem-overlay{opacity:1}
+.gitem-label{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);letter-spacing:1px;position:absolute;bottom:1rem;left:0;right:0;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,0.5));padding:1rem 0.5rem 0.5rem}
+
+/* TESTI */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.testi-card{background:var(--white);border-radius:20px;padding:1.8rem;border:1px solid var(--border);box-shadow:var(--shadow);transition:all 0.3s}
+.testi-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.testi-stars{color:var(--gold);font-size:1.1rem;margin-bottom:.8rem}
+.testi-q{font-size:13px;color:var(--text-mid);line-height:1.8;font-style:italic;margin-bottom:1.2rem}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-av{width:40px;height:40px;border-radius:50%;background:var(--green-dark);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.testi-name{font-weight:700;font-size:13px;color:var(--green-dark)}
+.testi-role{font-size:11px;color:var(--text-light)}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:3rem}
+.ci-card{background:var(--green-dark);border-radius:24px;padding:2rem}
+.ci-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.ci-item:last-child{border-bottom:none}
+.ci-icon{width:44px;height:44px;border-radius:12px;background:rgba(212,160,23,0.12);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.ci-text h4{font-weight:700;font-size:13px;color:var(--gold);margin-bottom:3px}
+.ci-text p,.ci-text a{font-size:13px;color:rgba(255,255,255,0.65);text-decoration:none;display:block;line-height:1.7}
+.ci-text a:hover{color:var(--gold)}
+.cf-card{background:var(--white);border-radius:24px;padding:2rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+.cf-card h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--green-dark);margin-bottom:1.5rem}
+
+@media(max-width:900px){
+  .hero-grid,.about-grid,.anthem-grid,.contact-grid{grid-template-columns:1fr}
+  .hero-right-col{display:none}
+  .fees-grid,.testi-grid{grid-template-columns:1fr 1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gitem.g-big{grid-column:span 2;grid-row:auto}
+  .about-visual{height:280px}
+  .av-main{width:240px;height:290px}
+  .av-accent{width:180px;height:190px}
+  .qb-inner{flex-wrap:wrap}
+  .qb-item{min-width:50%;border-bottom:1px solid var(--border);border-right:none}
+}
+@media(max-width:600px){
+  .fees-grid,.testi-grid{grid-template-columns:1fr}
+  .gitem.g-big{grid-column:auto}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .about-features{grid-template-columns:1fr}
+  .qb-item{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME MARQUEE BAR -->
+<div class="welcome-bar">
+  <div class="welcome-bar-inner" id="marqueeText">
+    🌿 <span style="color:var(--gold);font-size:1.2rem;font-weight:900">You are welcome to AR-Risalah Academy Nursery &amp; Basic School</span>
+    &nbsp;✦&nbsp; Knowledge Is Insight &nbsp;✦&nbsp;
+    <span>Nurturing minds with a balanced blend of Moral, Islamic &amp; Western Education</span>
+    &nbsp;✦&nbsp; Saki, Oyo State, Nigeria &nbsp;✦&nbsp;
+    <span>📞 08022943827 &nbsp;|&nbsp; 08079265878 &nbsp;|&nbsp; ✉ adekunleismail51@gmail.com</span>
+    &nbsp;✦&nbsp; Now Enrolling for 2025/2026 Academic Session &nbsp;✦&nbsp;
+    <span>🕌 A Citadel of Knowledge — Up Ar-Risalah!</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-logo"><div class="logo-placeholder" style="width:44px;height:44px;color:var(--gold)"></div></div>
+      <div>
+        <span class="brand-name">AR-RISALAH ACADEMY</span>
+        <span class="brand-sub">Nursery &amp; Basic School · Saki</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link active">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="admission.html" class="nav-link">Admission</a></li>
+      <li><a href="results.html" class="nav-link">Results</a></li>
+      <li><a href="admin.html" class="nav-link">Admin</a></li>
+      <li><a href="portals.html" class="nav-link">Portals</a></li>
+      <li><a href="media.html" class="nav-link">Media</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <a href="admission.html" class="btn btn-gold btn-sm">✦ Enrol Now</a>
+    </div>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Home</a>
+    <a href="about.html">ℹ️ About</a>
+    <a href="admission.html">📝 Admission</a>
+    <a href="results.html">📊 Results</a>
+    <a href="admin.html">⚙️ Admin Dashboard</a>
+    <a href="portals.html">🔐 Portals</a>
+    <a href="media.html">📸 Media</a>
+    <a href="#contact">📞 Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="fade-in">
+        <p class="hero-arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ &nbsp;—&nbsp; In the Name of Allah</p>
+        <h1>Nurturing Minds<br>With <em>Balanced</em><br>Education</h1>
+        <p class="hero-sub">AR-RISALAH ACADEMY — a citadel of knowledge blending Moral, Islamic & Western Education for the leaders of tomorrow in Saki, Oyo State.</p>
+        <div class="hero-btns">
+          <a href="admission.html" class="btn btn-gold btn-lg">✦ Apply Now</a>
+          <a href="results.html" class="btn btn-outline-white">📊 Check Results</a>
+          <a href="portals.html" class="btn btn-outline-white">🔐 Student Portal</a>
+        </div>
+        <div class="hero-motto">
+          <p>"Knowledge Is Insight"</p>
+          <small>School Motto — AR-Risalah Academy</small>
+        </div>
+      </div>
+      <div class="hero-right-col fade-in" style="transition-delay:0.2s">
+        <div class="hero-card">
+          <div class="hc-logo-wrap">
+            <div class="hc-logo"><div class="logo-placeholder" style="color:var(--gold)"></div></div>
+            <div class="hc-name">AR-RISALAH ACADEMY</div>
+            <div class="hc-sub">Nursery &amp; Basic School</div>
+          </div>
+          <div class="hc-divider"></div>
+          <div class="hc-stats">
+            <div class="hc-stat"><div class="hc-stat-n">9</div><div class="hc-stat-l">Class Levels</div></div>
+            <div class="hc-stat"><div class="hc-stat-n">3</div><div class="hc-stat-l">Terms/Session</div></div>
+            <div class="hc-stat"><div class="hc-stat-n">A+</div><div class="hc-stat-l">Excellence</div></div>
+            <div class="hc-stat"><div class="hc-stat-n">100%</div><div class="hc-stat-l">Islamic Values</div></div>
+          </div>
+          <div class="hc-contact">
+            <a href="tel:08022943827">📱 08022943827 (WhatsApp)</a>
+            <a href="tel:08079265878">📞 08079265878</a>
+            <a href="mailto:adekunleismail51@gmail.com">✉ adekunleismail51@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK BAR -->
+<div class="quick-bar">
+  <div class="qb-inner">
+    <a href="admission.html" class="qb-item qbi-1">
+      <div class="qb-icon">📝</div>
+      <div class="qb-text"><strong>Apply for Admission</strong><span>Register your child online</span></div>
+    </a>
+    <a href="results.html" class="qb-item qbi-2">
+      <div class="qb-icon">📊</div>
+      <div class="qb-text"><strong>Check Results</strong><span>View academic performance</span></div>
+    </a>
+    <a href="portals.html#parent" class="qb-item qbi-3">
+      <div class="qb-icon">👪</div>
+      <div class="qb-text"><strong>Parent Portal</strong><span>Track your child's progress</span></div>
+    </a>
+    <a href="#contact" class="qb-item qbi-4">
+      <div class="qb-icon">📞</div>
+      <div class="qb-text"><strong>Contact School</strong><span>Talk to administration</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" style="background:var(--white)" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="fade-in">
+        <div class="eyebrow">About Our School</div>
+        <h2 class="section-title">A <em>Citadel of Knowledge</em> in Saki</h2>
+        <div class="gold-bar"></div>
+        <p style="color:var(--text-mid);line-height:1.9;margin-bottom:1rem">AR-RISALAH ACADEMY Nursery & Basic School is an institution dedicated to nurturing young minds through moral upbringing, Islamic values, and western education while producing academically sound pupils.</p>
+        <p style="color:var(--text-mid);line-height:1.9">"Education is the best legacy you can afford to your children." We offer complete education from Crèche through Basic 6 — ensuring every child leaves as a well-rounded, confident individual.</p>
+        <div class="about-features">
+          <div class="af"><span class="af-i">🕌</span><span class="af-t">Islamic & Qur'anic Studies</span></div>
+          <div class="af"><span class="af-i">📚</span><span class="af-t">Western Curriculum</span></div>
+          <div class="af"><span class="af-i">💻</span><span class="af-t">Computer Education</span></div>
+          <div class="af"><span class="af-i">👨‍🏫</span><span class="af-t">Experienced Teachers</span></div>
+          <div class="af"><span class="af-i">🛡️</span><span class="af-t">Safe Environment</span></div>
+          <div class="af"><span class="af-i">💚</span><span class="af-t">Affordable Tuition</span></div>
+          <div class="af"><span class="af-i">📖</span><span class="af-t">Qur'an Memorisation</span></div>
+          <div class="af"><span class="af-i">🌟</span><span class="af-t">Moral Upbringing</span></div>
+        </div>
+        <div class="flex gap-2 mt-3 flex-wrap">
+          <a href="about.html" class="btn btn-green">Learn More About Us</a>
+          <a href="admission.html" class="btn btn-outline-green">Apply Now →</a>
+        </div>
+      </div>
+      <div class="about-visual fade-in" style="transition-delay:0.2s">
+        <div class="av-card av-main">
+          <div style="font-size:3.5rem">🕌</div>
+          <p style="font-family:'Amiri',serif;font-size:1.2rem;color:rgba(212,160,23,0.9);text-align:center;line-height:1.5">يَرْفَعِ اللهُ الَّذِينَ آمَنُوا وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ</p>
+          <p style="color:rgba(255,255,255,0.45);font-size:11px;text-align:center;line-height:1.6;font-style:italic">"Allah raises those who have been given knowledge by degrees." — Qur'an 58:11</p>
+        </div>
+        <div class="av-card av-accent">
+          <div style="font-size:2.2rem;margin-bottom:0.5rem">📚</div>
+          <p style="color:#fff;font-weight:700;font-size:14px;text-align:center;line-height:1.5">"Education is the best legacy you can afford to your children"</p>
+        </div>
+        <div class="av-float">
+          <strong>Crèche – Basic 6</strong>
+          <span>Complete Early Education</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEES -->
+<section class="section fees-bg" id="fees">
+  <div class="container">
+    <div class="eyebrow eyebrow-gold">School Fees 2025/2026</div>
+    <h2 class="section-title section-title-white">Affordable <em style="color:var(--gold)">Tuition</em> Fees</h2>
+    <div class="gold-bar"></div>
+    <p style="color:rgba(255,255,255,0.6);line-height:1.9;max-width:550px;margin-bottom:3rem">Quality education at a price every family can afford. Our fees cover all learning materials and activities for the full term.</p>
+    <div class="fees-grid">
+      <div class="fee-card fade-in">
+        <div class="fee-emoji">🍼</div>
+        <h3>Crèche / Kindergarten</h3>
+        <div class="fee-price">₦14,000 <small>/ term</small></div>
+        <ul class="fee-list">
+          <li>Crèche, KG 1 &amp; KG 2</li>
+          <li>Islamic early learning</li>
+          <li>Qur'an introduction</li>
+          <li>Basic numeracy &amp; literacy</li>
+          <li>Play-based learning</li>
+        </ul>
+        <a href="admission.html" class="btn btn-outline-white w-full" style="justify-content:center">Enrol Now</a>
+      </div>
+      <div class="fee-card feat fade-in" style="transition-delay:0.15s">
+        <div class="fee-emoji">🌱</div>
+        <h3>Nursery School</h3>
+        <div class="fee-price">₦14,000 <small>/ term</small></div>
+        <ul class="fee-list">
+          <li>Nursery 1, 2 &amp; 3</li>
+          <li>Full Nursery Curriculum</li>
+          <li>Qur'an memorisation</li>
+          <li>Computer education</li>
+          <li>Moral &amp; Islamic studies</li>
+        </ul>
+        <a href="admission.html" class="btn btn-gold w-full" style="justify-content:center">Enrol Now ✦</a>
+      </div>
+      <div class="fee-card fade-in" style="transition-delay:0.3s">
+        <div class="fee-emoji">🎓</div>
+        <h3>Basic School</h3>
+        <div class="fee-price">₦15,000 <small>/ term</small></div>
+        <ul class="fee-list">
+          <li>Basic 1 – Basic 6</li>
+          <li>Full National Curriculum</li>
+          <li>Islamic Studies &amp; Qur'an</li>
+          <li>Arabic Language</li>
+          <li>Computer &amp; Technology</li>
+        </ul>
+        <a href="admission.html" class="btn btn-outline-white w-full" style="justify-content:center">Enrol Now</a>
+      </div>
+    </div>
+    <div class="mt-3" style="background:rgba(212,160,23,0.07);border:1px solid rgba(212,160,23,0.2);border-radius:14px;padding:1rem;text-align:center">
+      <p style="color:rgba(255,255,255,0.6);font-size:13px">
+        Admission Form: <strong style="color:var(--gold)">₦1,500</strong> &nbsp;|&nbsp;
+        Report Card: <strong style="color:var(--gold)">₦2,500</strong> &nbsp;|&nbsp;
+        4 Passport Photographs required &nbsp;|&nbsp;
+        Enquiries: <a href="tel:08022943827" style="color:var(--gold)">08022943827</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ANTHEM -->
+<section class="section anthem-bg" id="anthem">
+  <div class="container">
+    <div class="anthem-grid">
+      <div class="fade-in">
+        <div class="eyebrow eyebrow-gold">School Anthem</div>
+        <h2 class="section-title section-title-white">The Spirit of <em style="color:var(--gold)">Ar-Risalah</em></h2>
+        <div class="gold-bar"></div>
+        <p style="color:rgba(255,255,255,0.65);line-height:1.9;margin-bottom:1.5rem">Our school anthem embodies the spirit of excellence, knowledge, and success that every student carries throughout their life. Sung with pride at every school gathering.</p>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(212,160,23,0.2);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem">
+          <p style="color:rgba(255,255,255,0.4);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">School Motto</p>
+          <p style="font-family:'Amiri',serif;font-size:1.8rem;color:var(--gold);font-style:italic">"Knowledge Is Insight"</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.2rem">
+          <p style="color:rgba(255,255,255,0.4);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Proprietor</p>
+          <p style="color:#fff;font-weight:700;font-size:15px">Mr. Ashiru Ismail Adekunle</p>
+          <p style="color:rgba(255,255,255,0.45);font-size:12px">AR-Risalah Academy, Saki, Oyo State</p>
+        </div>
+      </div>
+      <div class="anthem-card fade-in" style="transition-delay:0.2s">
+        <div class="anthem-title">🎵 The School Anthem</div>
+        <ul class="anthem-lines">
+          <li>Up Ar-Risalah, Up Ar-Risalah</li>
+          <li>Champion is us</li>
+          <li>We are the best</li>
+          <li>Knowledge is insight</li>
+          <li>Ar-Risalah! Academy</li>
+          <li>Is a citadel of knowledge</li>
+          <li>Success is us in everything</li>
+          <li>Of our life.</li>
+          <li class="bold-line">Up Up Up, Ar-Risalah.</li>
+        </ul>
+        <div class="anthem-actions">
+          <div class="anthem-play-wrap">
+            <button class="btn btn-gold btn-sm" id="playBtn" onclick="toggleAnthem()">▶ Play Anthem</button>
+            <div class="play-bars" id="playBars"><div class="play-bar"></div><div class="play-bar"></div><div class="play-bar"></div><div class="play-bar"></div><div class="play-bar"></div></div>
+          </div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2)" onclick="downloadAnthem()">⬇ Download PDF</button>
+        </div>
+        <div class="mt-2" style="font-size:11px;color:rgba(255,255,255,0.3);text-align:center;border-top:1px solid rgba(255,255,255,0.06);padding-top:0.8rem">Upload audio (MP3/WAV) via Admin → Media Portal</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section" style="background:var(--off-white)" id="gallery">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Photo Gallery</div>
+      <h2 class="section-title">Life at <em>Ar-Risalah</em></h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="gallery-grid mt-4 fade-in">
+      <div class="gitem g-big" style="background:linear-gradient(145deg,#002a00,#005a00)">
+        <div style="font-size:4rem">🕌</div>
+        <div style="font-weight:700;color:#fff;font-size:15px">Islamic Assembly</div>
+        <p style="color:rgba(255,255,255,0.4);font-size:12px;text-align:center;padding:0 1rem">Daily morning devotion and Qur'an recitation</p>
+        <div class="gitem-overlay">🔍</div>
+      </div>
+      <div class="gitem" style="background:linear-gradient(145deg,#b8860b,#d4a017)">
+        <div style="font-size:2.5rem">🎓</div>
+        <div class="gitem-label">Graduation Day</div>
+        <div class="gitem-overlay">🔍</div>
+      </div>
+      <div class="gitem" style="background:linear-gradient(145deg,#1a5276,#2980b9)">
+        <div style="font-size:2.5rem">💻</div>
+        <div class="gitem-label">Computer Lab</div>
+        <div class="gitem-overlay">🔍</div>
+      </div>
+      <div class="gitem" style="background:linear-gradient(145deg,#6c3483,#8e44ad)">
+        <div style="font-size:2.5rem">🏆</div>
+        <div class="gitem-label">Competitions</div>
+        <div class="gitem-overlay">🔍</div>
+      </div>
+      <div class="gitem" style="background:linear-gradient(145deg,#1e8449,#27ae60)">
+        <div style="font-size:2.5rem">📖</div>
+        <div class="gitem-label">Qur'an Class</div>
+        <div class="gitem-overlay">🔍</div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="media.html" class="btn btn-green">View Full Gallery →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="background:var(--green-light)" id="testimonials">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Parent Testimonies</div>
+      <h2 class="section-title">What Our <em>Families</em> Say</h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="testi-grid mt-4">
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">"My son's Islamic knowledge has improved tremendously. He now recites Qur'an fluently and his academic performance is top-notch. Ar-Risalah is truly the best school in Saki."</p>
+        <div class="testi-author">
+          <div class="testi-av">AA</div>
+          <div><div class="testi-name">Alhaji Abdullahi A.</div><div class="testi-role">Parent · Basic 5 Student</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-in" style="transition-delay:0.15s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">"The balance of Islamic and western education is exactly what I wanted for my daughter. The teachers are patient, dedicated, and the environment is completely safe and Islamic."</p>
+        <div class="testi-author">
+          <div class="testi-av">FO</div>
+          <div><div class="testi-name">Hajia Fatimah Olayinka</div><div class="testi-role">Parent · Nursery 2 Student</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-in" style="transition-delay:0.3s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">"The result system is transparent and professional. The fees are very affordable and the school administration is excellent. My three children are all enrolled here."</p>
+        <div class="testi-author">
+          <div class="testi-av">MB</div>
+          <div><div class="testi-name">Malam Bello M.</div><div class="testi-role">Parent · 3 Students Enrolled</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="media.html#testimonies" class="btn btn-green">Read More Testimonies →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" style="background:var(--white)" id="contact">
+  <div class="container">
+    <div class="fade-in">
+      <div class="eyebrow">Get In Touch</div>
+      <h2 class="section-title">Visit or <em>Contact</em> Us</h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="contact-grid mt-4">
+      <div class="fade-in">
+        <div class="ci-card">
+          <div style="margin-bottom:1rem">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);margin-bottom:3px">AR-Risalah Academy</h3>
+            <p style="color:rgba(255,255,255,0.5);font-size:12px">Nursery &amp; Basic School, Saki, Oyo State</p>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📍</div>
+            <div class="ci-text"><h4>Address</h4><p>Alh. Zakariyah Salaam Street, Behind Suurulere Kaomi Central Mosque, Off Kaomi Road, Saki, Oyo State, Nigeria</p></div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📱</div>
+            <div class="ci-text"><h4>WhatsApp / Phone</h4><a href="https://wa.me/2348022943827">08022943827 (WhatsApp)</a><a href="tel:08079265878">08079265878</a></div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">✉️</div>
+            <div class="ci-text"><h4>Email</h4><a href="mailto:adekunleismail51@gmail.com">adekunleismail51@gmail.com</a></div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">🕐</div>
+            <div class="ci-text"><h4>School Hours</h4><p>Mon – Fri: 7:30am – 3:00pm<br>Office: 8:00am – 4:30pm</p></div>
+          </div>
+          <div class="mt-2 flex gap-2 flex-wrap">
+            <a href="https://wa.me/2348022943827?text=Hello%20AR-Risalah%20Academy%2C%20I%20want%20to%20make%20an%20enquiry" target="_blank" class="btn btn-gold btn-sm">💬 WhatsApp</a>
+            <a href="mailto:adekunleismail51@gmail.com" class="btn btn-outline-gold btn-sm">✉ Email Us</a>
+          </div>
+        </div>
+        <div class="mt-2" style="border-radius:14px;overflow:hidden;border:2px solid var(--green-light)">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31460!2d3.393!3d8.657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103!2sSaki%2C+Oyo!5e0!3m2!1sen!2sng!4v1700000000" width="100%" height="180" style="border:0;display:block" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="cf-card fade-in" style="transition-delay:0.2s">
+        <h3>Send Us a Message</h3>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Your Name</label><input class="form-control" type="text" placeholder="Full name" id="cName"></div>
+          <div class="form-group"><label class="form-label">Phone Number</label><input class="form-control" type="tel" placeholder="08XXXXXXXXX" id="cPhone"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email Address</label><input class="form-control" type="email" placeholder="your@email.com" id="cEmail"></div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <select class="form-control" id="cSubject">
+            <option>Admission Enquiry</option>
+            <option>Result Verification</option>
+            <option>Fees Information</option>
+            <option>Teacher Recruitment</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Message</label><textarea class="form-control" id="cMsg" placeholder="Type your message here..."></textarea></div>
+        <button class="btn btn-green w-full" style="font-size:15px;border-radius:12px;justify-content:center" onclick="submitContact()">Send Message ✦</button>
+        <div class="mt-2 alert alert-info" style="font-size:12px">
+          📱 Quick contact: <a href="https://wa.me/2348022943827" style="color:var(--green);font-weight:700">WhatsApp 08022943827</a> &nbsp;|&nbsp; <a href="mailto:adekunleismail51@gmail.com" style="color:var(--green);font-weight:700">Email Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+          <div style="width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);background:rgba(212,160,23,0.08)">
+            <div class="logo-placeholder" style="width:36px;height:36px;color:var(--gold)"></div>
+          </div>
+          <div>
+            <h3 style="font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:1.1rem;margin:0">AR-RISALAH ACADEMY</h3>
+            <p style="color:rgba(255,255,255,0.4);font-size:10px;margin:0;letter-spacing:1px">NURSERY &amp; BASIC SCHOOL</p>
+          </div>
+        </div>
+        <p style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.8">Nurturing minds with a balanced blend of Moral, Islamic &amp; Western Education. Saki, Oyo State, Nigeria.</p>
+        <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold);font-size:1.05rem;margin-top:0.8rem">"Knowledge Is Insight"</p>
+        <p style="color:rgba(255,255,255,0.3);font-size:12px;margin-top:0.5rem">Proprietor: Mr. Ashiru Ismail Adekunle</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About School</a></li>
+          <li><a href="admission.html">Admission</a></li>
+          <li><a href="results.html">Results Portal</a></li>
+          <li><a href="media.html">Media Gallery</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Portals</h4>
+        <ul>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+          <li><a href="portals.html#teacher">Teacher Portal</a></li>
+          <li><a href="portals.html#student">Student Portal</a></li>
+          <li><a href="portals.html#parent">Parent Portal</a></li>
+          <li><a href="results.html">Result Check</a></li>
+          <li><a href="admission.html">Apply Online</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul>
+          <li><a href="tel:08022943827">📱 08022943827 (WA)</a></li>
+          <li><a href="tel:08079265878">📞 08079265878</a></li>
+          <li><a href="mailto:adekunleismail51@gmail.com">✉ adekunleismail51@gmail.com</a></li>
+          <li><a href="#">📍 Saki, Oyo State</a></li>
+        </ul>
+        <a href="https://wa.me/2348022943827" class="btn btn-gold btn-sm mt-2" target="_blank">💬 WhatsApp Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025/2026 AR-Risalah Academy Nursery &amp; Basic School, Saki. All Rights Reserved.</p>
+      <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold);font-size:0.95rem">"Knowledge Is Insight"</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/2348022943827?text=Hello%20AR-Risalah%20Academy!" class="wa-float" target="_blank" title="Chat on WhatsApp">💬</a>
+
+<script src="app.js"></script>
+<script>
+let playing = false;
+function toggleAnthem() {
+  playing = !playing;
+  document.getElementById('playBars').classList.toggle('playing', playing);
+  document.getElementById('playBtn').textContent = playing ? '⏹ Stop' : '▶ Play Anthem';
+}
+function downloadAnthem() {
+  showToast('Opening anthem PDF...', 'info');
+}
+function submitContact() {
+  const name = document.getElementById('cName').value;
+  const phone = document.getElementById('cPhone').value;
+  const msg = document.getElementById('cMsg').value;
+  if (!name || !phone) { showToast('Please enter your name and phone number', 'warning'); return; }
+  showToast('Message sent successfully! We will respond within 24 hours.', 'success', 5000);
+  document.getElementById('cName').value = '';
+  document.getElementById('cPhone').value = '';
+  document.getElementById('cEmail').value = '';
+  document.getElementById('cMsg').value = '';
+}
+</script>
+</body>
+</html>

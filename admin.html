@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — AR-Risalah Academy</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--off-white)}
+.portal-body{padding-top:0;display:flex;min-height:100vh}
+.sidebar-logo-wrap{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);background:rgba(212,160,23,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0}
+.chart-bar-wrap{display:flex;align-items:flex-end;gap:4px;height:100px;margin-top:1rem}
+.chart-bar{flex:1;border-radius:4px 4px 0 0;background:var(--green);transition:height 0.5s ease;cursor:pointer;position:relative;min-width:20px}
+.chart-bar:hover{background:var(--gold)}
+.chart-bar-label{font-size:9px;color:var(--text-light);text-align:center;margin-top:4px}
+.chart-wrap{display:flex;flex-direction:column}
+.search-bar{display:flex;gap:0.8rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap}
+.search-bar input{flex:1;min-width:200px}
+.student-table-wrap{overflow-x:auto}
+.action-btns{display:flex;gap:0.4rem}
+.action-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.edit-btn{background:var(--green-light);color:var(--green-dark)}
+.del-btn{background:#fee2e2;color:#991b1b}
+.view-btn{background:var(--gold-light);color:var(--gold-dark)}
+.notify-dot{width:8px;height:8px;border-radius:50%;background:#dc2626;flex-shrink:0}
+.notif-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.notif-item:last-child{border-bottom:none}
+.notif-text{font-size:13px;color:var(--text-dark)}
+.notif-time{font-size:11px;color:var(--text-light);white-space:nowrap}
+@media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0!important}}
+</style>
+</head>
+<body class="portal-body">
+
+<!-- PORTAL WATERMARK -->
+<div class="portal-watermark-bg"><div class="logo-placeholder" style="width:100%;height:100%;color:var(--green)"></div></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo-wrap"><div class="logo-placeholder" style="width:30px;height:30px;color:var(--gold)"></div></div>
+    <div>
+      <div class="sidebar-school-name">AR-RISALAH ACADEMY</div>
+      <div class="sidebar-school-sub">Admin Portal</div>
+    </div>
+  </div>
+  <div class="sidebar-user">
+    <div class="sidebar-user-name">Administrator</div>
+    <div class="sidebar-user-role">🔐 Full Access · 2025/2026</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Dashboard</div>
+    <a class="sidebar-link active" href="#" onclick="showPanel('overview')"><span class="sidebar-icon">📊</span> Overview</a>
+    <a class="sidebar-link" href="#" onclick="showPanel('students')"><span class="sidebar-icon">👨‍🎓</span> Students</a>
+    <a class="sidebar-link" href="#" onclick="showPanel('results')"><span class="sidebar-icon">📋</span> Results</a>
+    <a class="sidebar-link" href="#" onclick="showPanel('fees')"><span class="sidebar-icon">💳</span> Fees</a>
+    <div class="sidebar-section-label">Management</div>
+    <a class="sidebar-link" href="#" onclick="showPanel('teachers')"><span class="sidebar-icon">👨‍🏫</span> Teachers</a>
+    <a class="sidebar-link" href="#" onclick="showPanel('attendance')"><span class="sidebar-icon">📅</span> Attendance</a>
+    <a class="sidebar-link" href="#" onclick="showPanel('media')"><span class="sidebar-icon">📸</span> Media</a>
+    <a class="sidebar-link" href="#" onclick="showPanel('notifications')"><span class="sidebar-icon">🔔</span> Notifications</a>
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-link" href="results.html"><span class="sidebar-icon">🖨️</span> Generate Result</a>
+    <a class="sidebar-link" href="admission.html"><span class="sidebar-icon">📝</span> New Admission</a>
+    <a class="sidebar-link" href="index.html"><span class="sidebar-icon">🏠</span> School Website</a>
+    <a class="sidebar-link" href="#" onclick="doLogout()" style="color:#fca5a5"><span class="sidebar-icon">🚪</span> Logout</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="main-content" style="margin-left:260px">
+  <!-- DASH HEADER -->
+  <div class="dash-header">
+    <div class="dash-header-left">
+      <button style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--text-mid)" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+      <div class="dash-title" id="panelTitle">Dashboard Overview</div>
+    </div>
+    <div class="flex gap-2 align-items:center">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <span style="font-size:13px;color:var(--text-light)" id="dashDate"></span>
+      <a href="index.html" class="btn btn-gold btn-sm">🌐 Website</a>
+    </div>
+  </div>
+
+  <div class="dash-body" id="dashBody">
+
+    <!-- OVERVIEW PANEL -->
+    <div id="panel-overview">
+      <div class="stat-cards" id="statCards"></div>
+      <div class="grid-2" style="gap:1.5rem">
+        <div class="card">
+          <div class="card-body">
+            <div class="flex-between mb-2">
+              <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--green-dark)">Enrolment by Class</h3>
+              <span class="badge badge-green">2025/2026</span>
+            </div>
+            <div class="chart-bar-wrap" id="chartBars"></div>
+            <div style="display:flex;gap:4px;margin-top:4px" id="chartLabels"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex-between mb-2">
+              <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--green-dark)">Recent Activity</h3>
+              <button class="btn btn-sm btn-outline-green" onclick="loadNotifications()">View All</button>
+            </div>
+            <div id="recentActivity"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-body">
+          <div class="flex-between mb-2">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--green-dark)">Quick Actions</h3>
+          </div>
+          <div class="grid-4" style="gap:1rem">
+            <a href="admission.html" class="btn btn-green" style="flex-direction:column;gap:4px;border-radius:16px;padding:1.5rem;text-align:center;justify-content:center"><span style="font-size:1.8rem">📝</span><span>New Admission</span></a>
+            <a href="results.html" class="btn btn-gold" style="flex-direction:column;gap:4px;border-radius:16px;padding:1.5rem;text-align:center;justify-content:center"><span style="font-size:1.8rem">📊</span><span>Generate Result</span></a>
+            <button class="btn btn-dark" style="flex-direction:column;gap:4px;border-radius:16px;padding:1.5rem;justify-content:center" onclick="showPanel('students')"><span style="font-size:1.8rem">👨‍🎓</span><span>View Students</span></button>
+            <button class="btn btn-outline-green" style="flex-direction:column;gap:4px;border-radius:16px;padding:1.5rem;justify-content:center" onclick="exportAllStudents()"><span style="font-size:1.8rem">📥</span><span>Export CSV</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENTS PANEL -->
+    <div id="panel-students" style="display:none">
+      <div class="flex-between mb-3">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark)">Student Records</h2>
+        <div class="flex gap-2">
+          <a href="admission.html" class="btn btn-gold btn-sm">➕ Add Student</a>
+          <button class="btn btn-green btn-sm" onclick="exportAllStudents()">📥 Export CSV</button>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body" style="padding:1rem">
+          <div class="search-bar">
+            <input type="text" class="form-control" id="studentSearch" placeholder="🔍 Search by name, admission number, class..." oninput="filterStudents()">
+            <select class="form-control" id="classFilter" style="width:180px" onchange="filterStudents()">
+              <option value="">All Classes</option>
+              <option>Nursery 1</option><option>Nursery 2</option><option>Nursery 3</option>
+              <option>Basic 1</option><option>Basic 2</option><option>Basic 3</option>
+              <option>Basic 4</option><option>Basic 5</option><option>Basic 6</option>
+            </select>
+            <select class="form-control" id="genderFilter" style="width:130px" onchange="filterStudents()">
+              <option value="">All Genders</option><option>Male</option><option>Female</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="student-table-wrap">
+          <table class="table" id="studentTable">
+            <thead>
+              <tr>
+                <th>#</th><th>Adm. No</th><th>Full Name</th><th>Class</th>
+                <th>Gender</th><th>Parent</th><th>Phone</th><th>Adm. Date</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEES PANEL -->
+    <div id="panel-fees" style="display:none">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark);margin-bottom:1.5rem">Fees Management</h2>
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num">₦450K</div><div class="stat-label">Total Collected</div></div>
+        <div class="stat-card gold"><div class="stat-icon">⏳</div><div class="stat-num">₦120K</div><div class="stat-label">Outstanding</div></div>
+        <div class="stat-card red"><div class="stat-icon">⚠️</div><div class="stat-num">8</div><div class="stat-label">Owing Students</div></div>
+        <div class="stat-card blue"><div class="stat-icon">✅</div><div class="stat-num">42</div><div class="stat-label">Fully Paid</div></div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-body">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--green-dark);margin-bottom:1.5rem">Record Fee Payment</h3>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Student</label><select class="form-control" id="feeStudent"><option>Select student...</option></select></div>
+            <div class="form-group"><label class="form-label">Amount (₦)</label><input type="number" class="form-control" id="feeAmount" placeholder="e.g. 15000"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Term</label><select class="form-control"><option>First Term</option><option>Second Term</option><option>Third Term</option></select></div>
+            <div class="form-group"><label class="form-label">Payment Date</label><input type="date" class="form-control" id="feeDate"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Payment Method</label><select class="form-control"><option>Cash</option><option>Bank Transfer</option><option>POS</option></select></div>
+          <div class="form-actions">
+            <button class="btn btn-green" onclick="recordPayment()">💳 Record Payment</button>
+            <button class="btn btn-gold" onclick="generateReceipt()">🧾 Generate Receipt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEACHERS PANEL -->
+    <div id="panel-teachers" style="display:none">
+      <div class="flex-between mb-3">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark)">Teacher Management</h2>
+        <button class="btn btn-gold btn-sm" onclick="openModal('addTeacherModal')">➕ Add Teacher</button>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <table class="table">
+            <thead><tr><th>#</th><th>Name</th><th>Subject</th><th>Class</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="teacherTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTENDANCE PANEL -->
+    <div id="panel-attendance" style="display:none">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark);margin-bottom:1.5rem">Attendance Management</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Class</label>
+              <select class="form-control" id="attClass" onchange="loadClassForAttendance()">
+                <option>Basic 4</option><option>Basic 5</option><option>Basic 6</option>
+                <option>Basic 1</option><option>Basic 2</option><option>Basic 3</option>
+                <option>Nursery 1</option><option>Nursery 2</option><option>Nursery 3</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control" id="attDate"></div>
+          </div>
+          <div id="attendanceList" style="margin-top:1rem"></div>
+          <button class="btn btn-green mt-3" onclick="saveAttendance()">💾 Save Attendance</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDIA PANEL -->
+    <div id="panel-media" style="display:none">
+      <div class="flex-between mb-3">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark)">Media Portal</h2>
+        <button class="btn btn-gold btn-sm" onclick="openModal('uploadMediaModal')">📤 Upload Media</button>
+      </div>
+      <div class="grid-3" id="mediaGrid" style="margin-bottom:2rem"></div>
+      <div class="card">
+        <div class="card-body">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--green-dark);margin-bottom:1rem">Upload Anthem Audio</h3>
+          <div style="border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer" onclick="document.getElementById('anthemAudio').click()">
+            <div style="font-size:2rem">🎵</div>
+            <p style="font-size:13px;color:var(--text-light);margin-top:0.5rem">Click to upload school anthem (MP3/WAV)</p>
+            <p id="anthemFileName" style="font-size:12px;color:var(--green);margin-top:4px;font-weight:700"></p>
+          </div>
+          <input type="file" id="anthemAudio" accept="audio/*" style="display:none" onchange="document.getElementById('anthemFileName').textContent=this.files[0]?.name||''">
+          <button class="btn btn-green btn-sm mt-2" onclick="showToast('Anthem uploaded successfully!','success')">💾 Save Anthem</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS PANEL -->
+    <div id="panel-notifications" style="display:none">
+      <div class="flex-between mb-3">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark)">Notifications & Announcements</h2>
+        <button class="btn btn-gold btn-sm" onclick="openModal('sendNotifModal')">📢 Send Notification</button>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div id="notifList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS PANEL -->
+    <div id="panel-results" style="display:none">
+      <div class="flex-between mb-3">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green-dark)">Result Management</h2>
+        <a href="results.html" class="btn btn-gold btn-sm">📊 Generate New Result</a>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num" id="totalResults">0</div><div class="stat-label">Results Generated</div></div>
+        <div class="stat-card gold"><div class="stat-icon">✅</div><div class="stat-num" id="promotedCount">0</div><div class="stat-label">Promoted</div></div>
+        <div class="stat-card blue"><div class="stat-icon">⚠️</div><div class="stat-num" id="conditionalCount">0</div><div class="stat-label">Conditional</div></div>
+        <div class="stat-card red"><div class="stat-icon">❌</div><div class="stat-num" id="repeatCount">0</div><div class="stat-label">Repeat Class</div></div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-body">
+          <p style="color:var(--text-light);font-size:14px;text-align:center;padding:2rem">Results are stored locally. Use the <a href="results.html" style="color:var(--green);font-weight:700">Result Generator</a> to create and save results.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end dashBody -->
+</div><!-- end main-content -->
+
+<!-- ADD TEACHER MODAL -->
+<div class="modal-overlay" id="addTeacherModal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Add New Teacher</h3><button class="modal-close" onclick="closeModal('addTeacherModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-control" id="tName" placeholder="Teacher's full name"></div>
+        <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="tPhone" type="tel" placeholder="08XXXXXXXXX"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Subject(s)</label><input class="form-control" id="tSubject" placeholder="e.g. Mathematics, English"></div>
+        <div class="form-group"><label class="form-label">Class Assigned</label>
+          <select class="form-control" id="tClass">
+            <option>Nursery 1</option><option>Nursery 2</option><option>Nursery 3</option>
+            <option>Basic 1</option><option>Basic 2</option><option>Basic 3</option>
+            <option>Basic 4</option><option>Basic 5</option><option>Basic 6</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="tEmail" type="email" placeholder="teacher@email.com"></div>
+      <div class="form-actions">
+        <button class="btn btn-green" onclick="addTeacher()">Save Teacher</button>
+        <button class="btn btn-outline-green" onclick="closeModal('addTeacherModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD MEDIA MODAL -->
+<div class="modal-overlay" id="uploadMediaModal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Upload Media</h3><button class="modal-close" onclick="closeModal('uploadMediaModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Media Type</label>
+        <select class="form-control" id="mediaType">
+          <option>School Photo</option><option>Event Video</option><option>Graduation</option>
+          <option>Islamic Activity</option><option>Competition</option><option>Parent Testimony</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Caption</label><input class="form-control" id="mediaCaption" placeholder="Describe this media..."></div>
+      <div class="form-group"><label class="form-label">YouTube Link (optional)</label><input class="form-control" id="mediaYT" placeholder="https://youtube.com/..."></div>
+      <div class="form-group">
+        <label class="form-label">Upload File (Image/Video)</label>
+        <div style="border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer" onclick="document.getElementById('mediaFile').click()">
+          <div style="font-size:2rem">📤</div>
+          <p style="font-size:13px;color:var(--text-light);margin-top:0.3rem" id="mediaFileName">Click to choose file</p>
+        </div>
+        <input type="file" id="mediaFile" accept="image/*,video/*" style="display:none" onchange="document.getElementById('mediaFileName').textContent=this.files[0]?.name||'Click to choose file'">
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-green" onclick="uploadMedia()">📤 Upload</button>
+        <button class="btn btn-outline-green" onclick="closeModal('uploadMediaModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEND NOTIFICATION MODAL -->
+<div class="modal-overlay" id="sendNotifModal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Send Notification</h3><button class="modal-close" onclick="closeModal('sendNotifModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Title</label><input class="form-control" id="notifTitle" placeholder="Notification title"></div>
+      <div class="form-group"><label class="form-label">Message</label><textarea class="form-control" id="notifMsg" rows="3" placeholder="Enter your message..."></textarea></div>
+      <div class="form-group"><label class="form-label">Send To</label>
+        <select class="form-control" id="notifTo"><option>All Parents</option><option>All Teachers</option><option>All Students</option><option>Everyone</option></select>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-green" onclick="sendNotification()">📢 Send</button>
+        <button class="btn btn-outline-green" onclick="closeModal('sendNotifModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STUDENT DETAIL MODAL -->
+<div class="modal-overlay" id="studentDetailModal">
+  <div class="modal-box" style="max-width:700px">
+    <div class="modal-header"><h3>Student Details</h3><button class="modal-close" onclick="closeModal('studentDetailModal')">✕</button></div>
+    <div class="modal-body" id="studentDetailBody"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+const TEACHERS = [
+  {name:'Ustaz Muhammad Adebayo',subject:'Islamic Studies, Arabic',cls:'Basic 4',phone:'08011223344',status:'Active'},
+  {name:'Mrs. Khadijah Olatunji',subject:'English Studies, Handwriting',cls:'Basic 3',phone:'08022334455',status:'Active'},
+  {name:'Mr. Tunde Abiodun',subject:'Mathematics, Basic Sci',cls:'Basic 5',phone:'08033445566',status:'Active'},
+];
+const NOTIFICATIONS = [
+  {title:'School reopens Monday',msg:'Second term begins Monday 13th January 2025',to:'All Parents',time:'2 days ago'},
+  {title:'Fee reminder',msg:'Kindly pay outstanding fees before exam week',to:'All Parents',time:'5 days ago'},
+  {title:'Result published',msg:'First term results are now available',to:'All Students',time:'1 week ago'},
+];
+
+function showPanel(name) {
+  document.querySelectorAll('[id^="panel-"]').forEach(p => p.style.display = 'none');
+  document.getElementById('panel-' + name).style.display = 'block';
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.querySelector(`.sidebar-link[onclick="showPanel('${name}')"]`)?.classList.add('active');
+  const titles = {overview:'Dashboard Overview',students:'Student Records',results:'Result Management',fees:'Fees Management',teachers:'Teacher Management',attendance:'Attendance',media:'Media Portal',notifications:'Notifications'};
+  document.getElementById('panelTitle').textContent = titles[name] || 'Dashboard';
+  if (name === 'students') loadStudents();
+  if (name === 'teachers') loadTeachers();
+  if (name === 'notifications') loadNotifications();
+  if (name === 'media') loadMedia();
+  if (name === 'attendance') loadAttendanceList();
+  if (name === 'fees') loadFeeStudents();
+}
+
+function loadDashboard() {
+  const students = ARA_DB.getStudents();
+  const results = ARA_DB.getResults();
+  // Stats
+  document.getElementById('statCards').innerHTML = `
+    <div class="stat-card"><div class="stat-icon">👨‍🎓</div><div class="stat-num">${students.length}</div><div class="stat-label">Total Students</div></div>
+    <div class="stat-card gold"><div class="stat-icon">📋</div><div class="stat-num">${results.length}</div><div class="stat-label">Results Generated</div></div>
+    <div class="stat-card blue"><div class="stat-icon">👨‍🏫</div><div class="stat-num">${TEACHERS.length}</div><div class="stat-label">Teachers</div></div>
+    <div class="stat-card red"><div class="stat-icon">⏳</div><div class="stat-num">₦120K</div><div class="stat-label">Outstanding Fees</div></div>
+  `;
+  // Chart
+  const classes = ['N1','N2','N3','B1','B2','B3','B4','B5','B6'];
+  const counts = classes.map(c => students.filter(s => s.class && s.class.replace('Nursery ','N').replace('Basic ','B') === c).length || Math.floor(Math.random()*8+2));
+  const maxC = Math.max(...counts, 1);
+  const barsHTML = counts.map((c,i) => `<div class="chart-bar" style="height:${Math.max(10,c/maxC*90)}px" title="${classes[i]}: ${c} students"></div>`).join('');
+  const labsHTML = counts.map((_,i) => `<div class="chart-bar-label" style="flex:1;text-align:center">${classes[i]}</div>`).join('');
+  document.getElementById('chartBars').innerHTML = barsHTML;
+  document.getElementById('chartLabels').innerHTML = labsHTML;
+  // Activity
+  document.getElementById('recentActivity').innerHTML = [
+    {icon:'👨‍🎓',text:'New student admitted: Ahmad Yusuf Bello',time:'2h ago'},
+    {icon:'📊',text:'Result generated for Basic 4 — First Term',time:'5h ago'},
+    {icon:'💳',text:'Fee payment recorded: ₦15,000',time:'1d ago'},
+    {icon:'📢',text:'Notification sent to all parents',time:'2d ago'},
+  ].map(n => `<div class="notif-item"><div style="font-size:1.2rem">${n.icon}</div><div class="notif-text flex-1">${n.text}</div><div class="notif-time">${n.time}</div></div>`).join('');
+}
+
+function loadStudents() {
+  const students = ARA_DB.getStudents();
+  const tbody = document.getElementById('studentTableBody');
+  tbody.innerHTML = students.length ? students.map((s,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td><span class="badge badge-green">${s.admNo}</span></td>
+      <td style="font-weight:700">${s.name}</td>
+      <td>${s.class}</td>
+      <td>${s.gender}</td>
+      <td>${s.parent||'—'}</td>
+      <td><a href="tel:${s.phone}" style="color:var(--green)">${s.phone||'—'}</a></td>
+      <td>${s.admDate||'—'}</td>
+      <td>
+        <div class="action-btns">
+          <button class="action-btn view-btn" onclick="viewStudent('${s.admNo}')">View</button>
+          <button class="action-btn edit-btn" onclick="editStudent('${s.admNo}')">Edit</button>
+          <button class="action-btn del-btn" onclick="deleteStudent('${s.admNo}')">Del</button>
+        </div>
+      </td>
+    </tr>
+  `).join('') : '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text-light)">No students yet. <a href="admission.html" style="color:var(--green)">Add a student →</a></td></tr>';
+}
+
+function filterStudents() {
+  const search = document.getElementById('studentSearch').value.toLowerCase();
+  const cls = document.getElementById('classFilter').value;
+  const gender = document.getElementById('genderFilter').value;
+  let students = ARA_DB.getStudents().filter(s =>
+    (!search || s.name.toLowerCase().includes(search) || s.admNo.toLowerCase().includes(search)) &&
+    (!cls || s.class === cls) &&
+    (!gender || s.gender === gender)
+  );
+  const tbody = document.getElementById('studentTableBody');
+  tbody.innerHTML = students.length ? students.map((s,i) => `
+    <tr>
+      <td>${i+1}</td><td><span class="badge badge-green">${s.admNo}</span></td>
+      <td style="font-weight:700">${s.name}</td><td>${s.class}</td><td>${s.gender}</td>
+      <td>${s.parent||'—'}</td><td>${s.phone||'—'}</td><td>${s.admDate||'—'}</td>
+      <td><div class="action-btns">
+        <button class="action-btn view-btn" onclick="viewStudent('${s.admNo}')">View</button>
+        <button class="action-btn del-btn" onclick="deleteStudent('${s.admNo}')">Del</button>
+      </div></td>
+    </tr>
+  `).join('') : '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text-light)">No students match the filter.</td></tr>';
+}
+
+function viewStudent(admNo) {
+  const s = ARA_DB.getStudents().find(x => x.admNo === admNo);
+  if (!s) return;
+  document.getElementById('studentDetailBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start">
+      <div style="width:90px;height:110px;background:var(--green-light);border-radius:12px;border:2px solid var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:3rem;flex-shrink:0">👤</div>
+      <div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--green-dark)">${s.name}</h2>
+        <div class="flex gap-2 mt-1 flex-wrap">
+          <span class="badge badge-green">${s.admNo}</span>
+          <span class="badge badge-gold">${s.class}</span>
+          <span class="badge badge-blue">${s.gender}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:1rem">
+          ${[['Parent',s.parent],['Phone',s.phone],['DOB',s.dob],['Religion',s.religion],['Nationality',s.nationality],['Adm. Date',s.admDate],['Address',s.address||'—']].map(([l,v])=>`
+            <div style="background:var(--green-pale);border-radius:10px;padding:10px">
+              <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">${l}</div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-dark)">${v||'—'}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-3">
+      <a href="results.html" class="btn btn-gold btn-sm">📊 Generate Result</a>
+      <button class="btn btn-outline-green btn-sm" onclick="closeModal('studentDetailModal')">Close</button>
+    </div>
+  `;
+  openModal('studentDetailModal');
+}
+
+function deleteStudent(admNo) {
+  if (!confirm('Are you sure you want to delete this student?')) return;
+  ARA_DB.deleteStudent(admNo);
+  loadStudents();
+  showToast('Student deleted', 'success');
+}
+
+function editStudent(admNo) {
+  showToast('Redirect to edit form...', 'info');
+  window.location.href = 'admission.html';
+}
+
+function exportAllStudents() {
+  const students = ARA_DB.getStudents();
+  if (!students.length) { showToast('No students to export', 'warning'); return; }
+  exportCSV(students, 'ar-risalah-students.csv');
+}
+
+function loadTeachers() {
+  const db = ARA_DB.get();
+  const teachers = db.teachers || TEACHERS;
+  document.getElementById('teacherTableBody').innerHTML = teachers.map((t,i) => `
+    <tr>
+      <td>${i+1}</td><td style="font-weight:700">${t.name}</td>
+      <td>${t.subject}</td><td>${t.cls||t.class||'—'}</td><td>${t.phone}</td>
+      <td><span class="badge badge-green">${t.status||'Active'}</span></td>
+      <td><div class="action-btns">
+        <button class="action-btn edit-btn">Edit</button>
+        <button class="action-btn del-btn">Remove</button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function addTeacher() {
+  const name = document.getElementById('tName').value.trim();
+  if (!name) { showToast('Enter teacher name', 'warning'); return; }
+  const db = ARA_DB.get();
+  db.teachers = db.teachers || [];
+  db.teachers.push({ name, subject: document.getElementById('tSubject').value, cls: document.getElementById('tClass').value, phone: document.getElementById('tPhone').value, email: document.getElementById('tEmail').value, status: 'Active' });
+  ARA_DB.set(db);
+  closeModal('addTeacherModal');
+  loadTeachers();
+  showToast('Teacher added!', 'success');
+}
+
+function loadNotifications() {
+  const db = ARA_DB.get();
+  const notifs = db.notifications || NOTIFICATIONS;
+  document.getElementById('notifList').innerHTML = notifs.map(n => `
+    <div class="notif-item">
+      <div class="notify-dot"></div>
+      <div style="flex:1"><div style="font-weight:700;font-size:14px;color:var(--text-dark)">${n.title}</div><div style="font-size:12px;color:var(--text-mid);margin-top:2px">${n.msg}</div><div style="font-size:11px;color:var(--text-light);margin-top:2px">Sent to: ${n.to}</div></div>
+      <div class="notif-time">${n.time}</div>
+    </div>
+  `).join('') || '<p style="color:var(--text-light);text-align:center;padding:2rem">No notifications yet.</p>';
+  showPanel('notifications');
+}
+
+function sendNotification() {
+  const title = document.getElementById('notifTitle').value.trim();
+  const msg = document.getElementById('notifMsg').value.trim();
+  if (!title || !msg) { showToast('Fill in title and message', 'warning'); return; }
+  const db = ARA_DB.get();
+  db.notifications = db.notifications || [];
+  db.notifications.unshift({ title, msg, to: document.getElementById('notifTo').value, time: 'Just now' });
+  ARA_DB.set(db);
+  closeModal('sendNotifModal');
+  loadNotifications();
+  showToast('Notification sent!', 'success');
+}
+
+function loadMedia() {
+  const media = ARA_DB.getMedia();
+  const grid = document.getElementById('mediaGrid');
+  grid.innerHTML = media.length ? media.map(m => `
+    <div class="card"><div class="card-body" style="padding:1rem">
+      <div style="background:var(--green-light);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:0.8rem">📸</div>
+      <div style="font-weight:700;font-size:13px;color:var(--green-dark)">${m.caption||'Media'}</div>
+      <div style="font-size:11px;color:var(--text-light);margin-top:2px">${m.type} · ${m.date||'—'}</div>
+    </div></div>
+  `).join('') : '<p style="color:var(--text-light);grid-column:1/-1;text-align:center;padding:2rem">No media uploaded yet.</p>';
+}
+
+function uploadMedia() {
+  const caption = document.getElementById('mediaCaption').value.trim();
+  const type = document.getElementById('mediaType').value;
+  if (!caption) { showToast('Please add a caption', 'warning'); return; }
+  ARA_DB.saveMedia({ caption, type, yt: document.getElementById('mediaYT').value, date: new Date().toLocaleDateString('en-NG') });
+  closeModal('uploadMediaModal');
+  loadMedia();
+  showToast('Media uploaded!', 'success');
+}
+
+function loadAttendanceList() {
+  const cls = document.getElementById('attClass').value;
+  const students = ARA_DB.getStudents().filter(s => s.class === cls);
+  const list = document.getElementById('attendanceList');
+  if (!students.length) { list.innerHTML = '<p style="color:var(--text-light)">No students in this class.</p>'; return; }
+  list.innerHTML = `<table class="table"><thead><tr><th>#</th><th>Name</th><th>Adm. No</th><th>Present</th></tr></thead><tbody>
+    ${students.map((s,i) => `<tr><td>${i+1}</td><td>${s.name}</td><td>${s.admNo}</td>
+    <td><label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+      <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--green)"> <span style="font-size:13px">Present</span>
+    </label></td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function loadFeeStudents() {
+  const students = ARA_DB.getStudents();
+  const sel = document.getElementById('feeStudent');
+  sel.innerHTML = '<option value="">Select student...</option>' + students.map(s => `<option value="${s.admNo}">${s.name} (${s.class})</option>`).join('');
+}
+
+function saveAttendance() { showToast('Attendance saved!', 'success'); }
+function recordPayment() { showToast('Payment recorded!', 'success'); }
+function generateReceipt() { showToast('Receipt generated!', 'success'); }
+function doLogout() { if (confirm('Logout from admin dashboard?')) window.location.href = 'portals.html'; }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-NG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('attDate').value = new Date().toISOString().split('T')[0];
+  loadDashboard();
+});
+</script>
+</body>
+</html>

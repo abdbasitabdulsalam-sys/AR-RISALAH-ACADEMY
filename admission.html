@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admission — AR-Risalah Academy</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-hero{background:var(--g-hero);padding:6rem 0 4rem;margin-top:112px}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;font-weight:700}
+.req-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.req-item{display:flex;align-items:flex-start;gap:12px;padding:1rem 1.2rem;background:var(--white);border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.req-num{width:36px;height:36px;border-radius:50%;background:var(--green-dark);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.req-text h4{font-weight:700;font-size:14px;color:var(--green-dark);margin-bottom:3px}
+.req-text p{font-size:12px;color:var(--text-mid)}
+.adm-form-card{background:var(--white);border-radius:24px;padding:2.5rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+.adm-form-card h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--green-dark);margin-bottom:1.5rem}
+.section-divider{font-size:11px;font-weight:800;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin:1.8rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid var(--green-light)}
+.upload-box{border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s}
+.upload-box:hover{border-color:var(--green);background:var(--green-pale)}
+.slip-card{background:var(--green-dark);color:#fff;border-radius:20px;padding:2rem;position:relative;overflow:hidden;display:none}
+.slip-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.slip-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.05;pointer-events:none;width:200px;height:200px;color:var(--white)}
+@media(max-width:768px){.req-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="welcome-bar">
+  <div class="welcome-bar-inner">🌿 <span style="color:var(--gold);font-weight:900">You are welcome to AR-Risalah Academy Nursery &amp; Basic School</span> &nbsp;✦&nbsp; <span>Knowledge Is Insight</span> &nbsp;✦&nbsp; <span>Now Enrolling 2025/2026 · 📞 08022943827</span> &nbsp;&nbsp;&nbsp;</div>
+</div>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-logo"><div class="logo-placeholder" style="width:44px;height:44px;color:var(--gold)"></div></div>
+      <div><span class="brand-name">AR-RISALAH ACADEMY</span><span class="brand-sub">Nursery &amp; Basic School</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="admission.html" class="nav-link active">Admission</a></li>
+      <li><a href="results.html" class="nav-link">Results</a></li>
+      <li><a href="admin.html" class="nav-link">Admin</a></li>
+      <li><a href="portals.html" class="nav-link">Portals</a></li>
+      <li><a href="media.html" class="nav-link">Media</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <a href="admission.html" class="btn btn-gold btn-sm">✦ Enrol Now</a>
+    </div>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Home</a><a href="admission.html">📝 Admission</a><a href="results.html">📊 Results</a>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow eyebrow-gold">Admission 2025/2026</div>
+    <h1>Apply for <em style="color:var(--gold)">Admission</em></h1>
+    <p style="color:rgba(255,255,255,0.65);margin-top:0.5rem">Begin your child's journey to excellence at AR-Risalah Academy</p>
+  </div>
+</div>
+<section class="section" style="background:var(--off-white);padding-top:3rem">
+  <div class="container">
+    <div class="grid-2" style="align-items:start;gap:3rem">
+      <div>
+        <div class="eyebrow">Requirements</div>
+        <h2 class="section-title">Admission <em>Requirements</em></h2>
+        <div class="gold-bar"></div>
+        <p style="color:var(--text-mid);margin-bottom:2rem;line-height:1.8">Please ensure you have the following documents ready before completing the online admission form.</p>
+        <div class="req-grid">
+          <div class="req-item fade-in">
+            <div class="req-num">1</div>
+            <div class="req-text"><h4>Birth Certificate</h4><p>Photocopy of child's birth certificate or declaration of age</p></div>
+          </div>
+          <div class="req-item fade-in">
+            <div class="req-num">2</div>
+            <div class="req-text"><h4>Admission Form</h4><p>Payment of ₦1,500 admission form fee at the school office</p></div>
+          </div>
+          <div class="req-item fade-in">
+            <div class="req-num">3</div>
+            <div class="req-text"><h4>Report Card</h4><p>Previous school report card — ₦2,500 (for transferring students)</p></div>
+          </div>
+          <div class="req-item fade-in">
+            <div class="req-num">4</div>
+            <div class="req-text"><h4>Passport Photographs</h4><p>Four (4) recent passport-size photographs of the child</p></div>
+          </div>
+        </div>
+        <div class="mt-4" style="background:var(--green-dark);border-radius:20px;padding:1.8rem;color:#fff">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);margin-bottom:1rem">Fee Schedule</h3>
+          <div style="display:flex;flex-direction:column;gap:0.8rem">
+            <div style="display:flex;justify-content:space-between;padding:0.8rem;background:rgba(255,255,255,0.06);border-radius:10px">
+              <span style="font-size:13px">Nursery 1 – 3 (per term)</span>
+              <span style="font-weight:800;color:var(--gold)">₦14,000</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:0.8rem;background:rgba(255,255,255,0.06);border-radius:10px">
+              <span style="font-size:13px">Basic 1 – 6 (per term)</span>
+              <span style="font-weight:800;color:var(--gold)">₦15,000</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:0.8rem;background:rgba(255,255,255,0.06);border-radius:10px">
+              <span style="font-size:13px">Admission Form</span>
+              <span style="font-weight:800;color:var(--gold)">₦1,500</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:0.8rem;background:rgba(255,255,255,0.06);border-radius:10px">
+              <span style="font-size:13px">Report Card</span>
+              <span style="font-weight:800;color:var(--gold)">₦2,500</span>
+            </div>
+          </div>
+          <div class="mt-3 flex gap-2 flex-wrap">
+            <a href="tel:08022943827" class="btn btn-gold btn-sm">📱 Call 08022943827</a>
+            <a href="https://wa.me/2348022943827" class="btn btn-sm" style="background:#25D366;color:#fff" target="_blank">💬 WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="adm-form-card fade-in">
+          <h3>📝 Online Admission Form</h3>
+          <div id="admFormContent">
+            <div class="section-divider">Student Information</div>
+            <div class="form-group"><label class="form-label">Student Full Name <span class="required">*</span></label><input class="form-control" id="aName" type="text" placeholder="First, Middle and Last Name"></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Date of Birth <span class="required">*</span></label><input class="form-control" id="aDOB" type="date"></div>
+              <div class="form-group"><label class="form-label">Gender <span class="required">*</span></label><select class="form-control" id="aGender"><option>Male</option><option>Female</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Class Applying For <span class="required">*</span></label>
+                <select class="form-control" id="aClass">
+                  <option>Crèche</option><option>Nursery 1</option><option>Nursery 2</option><option>Nursery 3</option>
+                  <option>Basic 1</option><option>Basic 2</option><option>Basic 3</option>
+                  <option>Basic 4</option><option>Basic 5</option><option>Basic 6</option>
+                </select>
+              </div>
+              <div class="form-group"><label class="form-label">Religion</label><select class="form-control" id="aReligion"><option>Islam</option><option>Christianity</option><option>Other</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">State of Origin</label><input class="form-control" id="aState" type="text" placeholder="e.g. Oyo State"></div>
+              <div class="form-group"><label class="form-label">Nationality</label><input class="form-control" id="aNat" type="text" value="Nigerian"></div>
+            </div>
+            <div class="section-divider">Parent / Guardian Information</div>
+            <div class="form-group"><label class="form-label">Parent/Guardian Full Name <span class="required">*</span></label><input class="form-control" id="aParent" type="text" placeholder="Full name of parent or guardian"></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Phone Number <span class="required">*</span></label><input class="form-control" id="aPhone" type="tel" placeholder="08XXXXXXXXX"></div>
+              <div class="form-group"><label class="form-label">Email Address</label><input class="form-control" id="aEmail" type="email" placeholder="parent@email.com"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Home Address <span class="required">*</span></label><textarea class="form-control" id="aAddress" rows="2" placeholder="Full residential address"></textarea></div>
+            <div class="section-divider">Upload Documents</div>
+            <div class="form-group">
+              <label class="form-label">Passport Photograph</label>
+              <div class="upload-box" onclick="document.getElementById('aPassport').click()">
+                <div id="aPassportPreview" style="display:none"><img id="aPassportImg" style="width:80px;height:96px;object-fit:cover;border-radius:8px;border:2px solid var(--green-light)"></div>
+                <div id="aPassportPlaceholder"><div style="font-size:2rem">📷</div><p style="font-size:13px;color:var(--text-light);margin-top:0.3rem">Click to upload passport photo</p></div>
+              </div>
+              <input type="file" id="aPassport" accept="image/*" style="display:none" onchange="previewAdmPassport(this)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Birth Certificate (PDF/Image)</label>
+              <div class="upload-box" onclick="document.getElementById('aBirth').click()">
+                <div style="font-size:2rem">📄</div>
+                <p style="font-size:13px;color:var(--text-light);margin-top:0.3rem" id="aBirthLabel">Click to upload birth certificate</p>
+              </div>
+              <input type="file" id="aBirth" accept="image/*,.pdf" style="display:none" onchange="document.getElementById('aBirthLabel').textContent=this.files[0]?.name||'Click to upload'">
+            </div>
+            <button class="btn btn-green w-full mt-3" style="justify-content:center;font-size:15px;border-radius:12px" onclick="submitAdmission()">Submit Admission Application ✦</button>
+            <p style="font-size:12px;color:var(--text-light);text-align:center;margin-top:1rem">After submission, visit the school with your documents. Tel: <a href="tel:08022943827" style="color:var(--green)">08022943827</a></p>
+          </div>
+
+          <!-- SLIP (shown after submission) -->
+          <div class="slip-card" id="admissionSlip">
+            <div class="slip-watermark"><div class="logo-placeholder" style="width:200px;height:200px;color:#fff"></div></div>
+            <div style="position:relative;z-index:1">
+              <div style="text-align:center;margin-bottom:1.5rem">
+                <div class="logo-placeholder" style="width:70px;height:70px;color:var(--gold);margin:0 auto 0.5rem"></div>
+                <h3 style="font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:1.4rem">AR-RISALAH ACADEMY</h3>
+                <p style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px">ADMISSION SLIP — 2025/2026</p>
+              </div>
+              <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:1.5rem;margin-bottom:1rem">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+                  <div><p style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px">Admission No.</p><p style="font-weight:800;color:var(--gold);font-size:1.1rem" id="slipAdmNo">—</p></div>
+                  <div><p style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px">Student Name</p><p style="font-weight:700;color:#fff;font-size:13px" id="slipName">—</p></div>
+                  <div><p style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px">Class</p><p style="font-weight:700;color:#fff;font-size:13px" id="slipClass">—</p></div>
+                  <div><p style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px">Date</p><p style="font-weight:700;color:#fff;font-size:13px" id="slipDate">—</p></div>
+                </div>
+              </div>
+              <div style="background:rgba(212,160,23,0.1);border-radius:10px;padding:1rem;margin-bottom:1.5rem;border:1px solid rgba(212,160,23,0.2)">
+                <p style="font-size:12px;color:rgba(255,255,255,0.65)">Please bring this slip and original documents to the school office within 5 working days.</p>
+                <p style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:4px">📞 08022943827 | 08079265878</p>
+              </div>
+              <div style="text-align:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem">
+                <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold);font-size:1rem">"Knowledge Is Insight"</p>
+              </div>
+              <div class="flex gap-2 mt-3 justify-center">
+                <button class="btn btn-gold btn-sm" onclick="window.print()">🖨️ Print Slip</button>
+                <button class="btn btn-outline-gold btn-sm" onclick="resetForm()">📝 New Application</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:2rem">
+      <p>© 2025/2026 AR-Risalah Academy Nursery &amp; Basic School, Saki. All Rights Reserved.</p>
+      <p style="font-family:'Amiri',serif;font-style:italic;color:var(--gold)">"Knowledge Is Insight"</p>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/2348022943827" class="wa-float" target="_blank">💬</a>
+<script src="app.js"></script>
+<script>
+function previewAdmPassport(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('aPassportImg').src = e.target.result;
+    document.getElementById('aPassportPreview').style.display = 'block';
+    document.getElementById('aPassportPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+function submitAdmission() {
+  const name = document.getElementById('aName').value.trim();
+  const phone = document.getElementById('aPhone').value.trim();
+  const parent = document.getElementById('aParent').value.trim();
+  const cls = document.getElementById('aClass').value;
+  if (!name || !phone || !parent) { showToast('Please fill all required fields', 'warning'); return; }
+  const admNo = ARA_DB.getAdmNo();
+  const student = {
+    admNo, name, gender: document.getElementById('aGender').value,
+    class: cls, dob: document.getElementById('aDOB').value,
+    parent, phone, address: document.getElementById('aAddress').value,
+    religion: document.getElementById('aReligion').value,
+    nationality: document.getElementById('aNat').value,
+    state: document.getElementById('aState').value,
+    admDate: new Date().toISOString().split('T')[0],
+    email: document.getElementById('aEmail').value
+  };
+  ARA_DB.saveStudent(student);
+  document.getElementById('slipAdmNo').textContent = admNo;
+  document.getElementById('slipName').textContent = name;
+  document.getElementById('slipClass').textContent = cls;
+  document.getElementById('slipDate').textContent = new Date().toLocaleDateString('en-NG');
+  document.getElementById('admFormContent').style.display = 'none';
+  const slip = document.getElementById('admissionSlip');
+  slip.style.display = 'block';
+  renderLogos();
+  showToast('Application submitted! Admission No: ' + admNo, 'success', 6000);
+}
+function resetForm() {
+  document.getElementById('admFormContent').style.display = 'block';
+  document.getElementById('admissionSlip').style.display = 'none';
+}
+</script>
+</body>
+</html>
